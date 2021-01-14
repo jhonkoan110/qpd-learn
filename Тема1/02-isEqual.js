@@ -57,6 +57,7 @@ function isEqual(a, b) {
             return a === b;
         }
 
+        // Переменные для хранения ключей обьектов
         const keysA = Object.keys(a);
         const keysB = Object.keys(b);
 
