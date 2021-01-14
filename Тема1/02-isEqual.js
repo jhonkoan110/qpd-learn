@@ -28,10 +28,8 @@ function isEqual(a, b) {
 
     // Проверка на NaN, если тип данных Number
     if (isPrimitiveType(typeA)) {
-        if (typeA === 'number') {
-            if (isNaN(a) || isNaN(b)) {
-                return isNaN(a) && isNaN(b);
-            }
+        if (isNaN(a) || isNaN(b)) {
+            return isNaN(a) && isNaN(b);
         }
         return a === b;
     }
