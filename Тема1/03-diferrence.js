@@ -3,12 +3,12 @@ const arr2 = [2, 3, 6, -20, { age: 27 }, 'asd', 'a'];
 
 const difference = (array, values) => {
     // Проверка, массивы или нет
-    if (!Array.isArray(array) || !Array.isArray(values)) {
+    if (!Array.isArray(array)) {
         return [];
     }
 
     // Если хотя бы 1 массив пустой, возвращается первый массив
-    if (array.length === 0 || values.length === 0) {
+    if (array.length === 0 || !Array.isArray(values) || values.length === 0) {
         return array;
     }
 
