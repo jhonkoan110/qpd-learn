@@ -21,37 +21,46 @@ function isEqual(a, b) {
     const typeA = getTypeOf(a);
     const typeB = getTypeOf(b);
 
-    //Проверка на равенство типов данных
+    // Проверка на равенство типов данных
     if (typeA !== typeB) {
         return false;
     }
 
-    // Проверка на NaN, если тип данных Number
-    if (typeA === 'number') {
-        if (isNaN(a) || isNaN(b)) {
-            return isNaN(a) && isNaN(b);
+    // Проверка на примитивы (ТУТ РЕЧЬ О ВСЕХ)
+    if (isPrimitiveType(typeA)) {
+        // Проверка на тип данных Number (ЭТО ТОЛЬКО ДЛЯ ЧИСЕЛ)
+        if (typeA === 'number') {
+            if (isNaN(a) || isNaN(b)) {
+                return isNaN(a) && isNaN(b);
+            }
+            // Если проверка на NaN прошла, примитивы сравниваются
+            return a === b;
         }
-        return a === b;
+
+        // Проверка на равенство значений примитивов
+        if (a === b) {
+            return true;
+        }
     }
 
-    // Если примитивы равны, также если массив или обьект ссылается сам на себя
-    // Хранятся в одном месте в памяти
-    if (a === b) {
-        return true;
-    }
-
+    // Проверка на тип данных Function
     if (typeA === 'function') {
         if (a !== b) {
             return false;
         }
     }
 
-    // Елси массивы с разной длиной => false
+    // Проверка на тип данных Object
     if (typeA === 'object') {
+        // Проверка на null, тк typeof null === 'object
+        if (a === null || b === null) {
+            return a === b;
+        }
+
         const keysA = Object.keys(a);
         const keysB = Object.keys(b);
 
-        // Если обьекты, то сравнивается количество ключей в обоих
+        // Сравнивается кол-во ключей у обоих объектов
         if (keysA.length !== keysB.length) {
             return false;
         }
@@ -82,14 +91,5 @@ function getTypeOf(x) {
 
 // Проверка на примитивный тип
 function isPrimitiveType(x) {
-    return ['null', 'undefined', 'number', 'string', 'boolean', 'bigint', 'symbol'].includes(x);
+    return ['undefined', 'number', 'string', 'boolean', 'bigint', 'symbol'].includes(x);
 }
-
-// isEqual(human1, human2) // => true
-function Person(name, age) {
-    this.name = name;
-    this.age = age;
-}
-
-const human1 = new Person('Кирилл', 25);
-const human2 = new Person('Кирилл', 25);
