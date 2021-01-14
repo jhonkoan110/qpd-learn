@@ -1,17 +1,17 @@
+const sdsds = function () {
+    console.log(12);
+};
+
 const a = {
     a: 2,
-    foo: function () {
-        console.log(12);
-    },
+    foo: sdsds,
     b: 3,
 };
 
 const b = {
     b: 3,
     a: 2,
-    foo: function () {
-        console.log(12);
-    },
+    foo: sdsds,
 };
 
 console.log('isEqual:');
@@ -40,7 +40,7 @@ function isEqual(a, b) {
 
         // Проверка на NaN, если тип данных Number
         if (isPrimitiveType(typeA)) {
-            if (typeA === 'Number') {
+            if (typeA === 'number') {
                 if (isNaN(a) || isNaN(b)) {
                     return isNaN(a) && isNaN(b);
                 }
@@ -57,28 +57,14 @@ function isEqual(a, b) {
         pull.set(a, b);
         pull.set(b, a);
 
-        // Проверки на примитивы и на одинаковый тип данных прошли
-        if (typeA === 'Function') {
-            if (a.toString() !== b.toString()) {
+        if (typeA === 'function') {
+            if (a !== b) {
                 return false;
             }
         }
 
         // Елси массивы с разной длиной => false
-        if (typeA === 'Array') {
-            if (a.length !== b.length) {
-                return false;
-            }
-
-            // Сравниваются оба массива, если хоть одно значение не совпало => false
-            for (let i = 0; i < a.length; i++) {
-                if (isEqualMaster(a[i], b[i])) {
-                    return false;
-                }
-            }
-
-            return true;
-        } else {
+        if (typeA === 'object') {
             const keysA = Object.keys(a);
             const keysB = Object.keys(b);
 
@@ -106,15 +92,14 @@ function isEqual(a, b) {
         }
     }
 
-    // Получение из строчки например [object Number] слова Number
-    // в зависимости от типа данных аргумента x
+    // Получение типа данных
     function getTypeOf(x) {
-        return Object.prototype.toString.call(x).slice(8, -1);
+        return typeof x;
     }
 
     // Проверка на примитивный тип
     function isPrimitiveType(x) {
-        return ['Null', 'Undefined', 'Number', 'String', 'Boolean', 'BigInt', 'Symbol'].includes(x);
+        return ['null', 'undefined', 'number', 'string', 'boolean', 'bigint', 'symbol'].includes(x);
     }
 }
 
