@@ -18,89 +18,73 @@ console.log('isEqual:');
 console.log(isEqual(a, b)); //true
 
 function isEqual(a, b) {
-    const pull = new Map();
+    const typeA = getTypeOf(a);
+    const typeB = getTypeOf(b);
 
-    const result = isEqualMaster(a, b);
+    //Проверка на равенство типов данных
+    if (typeA !== typeB) {
+        return false;
+    }
 
-    pull.clear;
-
-    return result;
-
-    function isEqualMaster(a, b) {
-        if (pull.has(a)) {
-            return pull.get(a) === b;
+    // Проверка на NaN, если тип данных Number
+    if (isPrimitiveType(typeA)) {
+        if (typeA === 'number') {
+            if (isNaN(a) || isNaN(b)) {
+                return isNaN(a) && isNaN(b);
+            }
         }
-        const typeA = getTypeOf(a);
-        const typeB = getTypeOf(b);
+        return a === b;
+    }
 
-        //Проверка на равенство типов данных
-        if (typeA !== typeB) {
+    // Если примитивы равны, также если массив или обьект ссылается сам на себя
+    // Хранятся в одном месте в памяти
+    if (a === b) {
+        return true;
+    }
+
+    if (typeA === 'function') {
+        if (a !== b) {
+            return false;
+        }
+    }
+
+    // Елси массивы с разной длиной => false
+    if (typeA === 'object') {
+        const keysA = Object.keys(a);
+        const keysB = Object.keys(b);
+
+        // Если обьекты, то сравнивается количество ключей в обоих
+        if (keysA.length !== keysB.length) {
             return false;
         }
 
-        // Проверка на NaN, если тип данных Number
-        if (isPrimitiveType(typeA)) {
-            if (typeA === 'number') {
-                if (isNaN(a) || isNaN(b)) {
-                    return isNaN(a) && isNaN(b);
-                }
-            }
-            return a === b;
-        }
-
-        // Если примитивы равны, также если массив или обьект ссылается сам на себя
-        // Хранятся в одном месте в памяти
-        if (a === b) {
-            return true;
-        }
-
-        pull.set(a, b);
-        pull.set(b, a);
-
-        if (typeA === 'function') {
-            if (a !== b) {
+        // Если в обьекте B нет ключа из обьекта A => false
+        for (const key of keysA) {
+            if (!keysB.includes(key)) {
                 return false;
             }
         }
 
-        // Елси массивы с разной длиной => false
-        if (typeA === 'object') {
-            const keysA = Object.keys(a);
-            const keysB = Object.keys(b);
-
-            // Если обьекты, то сравнивается количество ключей в обоих
-            if (keysA.length !== keysB.length) {
+        // Сравниваются значения обьектов под одинаковыми ключами
+        for (const key of keysA) {
+            if (isEqual(a[key], b[key]) === false) {
                 return false;
             }
-
-            // Если в обьекте B нет ключа из обьекта A => false
-            for (const key of keysA) {
-                if (!keysB.includes(key)) {
-                    return false;
-                }
-            }
-
-            // Сравниваются значения обьектов под одинаковыми ключами
-            for (const key of keysA) {
-                if (isEqualMaster(a[key], b[key]) === false) {
-                    return false;
-                }
-            }
-
-            // Все проверки прошли
-            return true;
         }
-    }
 
-    // Получение типа данных
-    function getTypeOf(x) {
-        return typeof x;
+        // Все проверки прошли
+        return true;
     }
+}
 
-    // Проверка на примитивный тип
-    function isPrimitiveType(x) {
-        return ['null', 'undefined', 'number', 'string', 'boolean', 'bigint', 'symbol'].includes(x);
-    }
+// Получение типа данных
+function getTypeOf(x) {
+    return typeof x;
+}
+
+// Проверка на примитивный тип
+function isPrimitiveType(x) {
+    return ['null', 'undefined', 'number', 'string', 'boolean', 'bigint', 'symbol'].includes(x);
 }
 
 // isEqual(human1, human2) // => true
