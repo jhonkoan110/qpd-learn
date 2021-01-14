@@ -26,9 +26,10 @@ function isEqual(a, b) {
         return false;
     }
 
-    // Проверка на примитивы (ТУТ РЕЧЬ О ВСЕХ)
+    // Проверка на все примитивы
     if (isPrimitiveType(typeA)) {
-        // Проверка на тип данных Number (ЭТО ТОЛЬКО ДЛЯ ЧИСЕЛ)
+        // Проверка на тип данных Number
+        // Является ли число NaN
         if (typeA === 'number') {
             if (isNaN(a) || isNaN(b)) {
                 return isNaN(a) && isNaN(b);
