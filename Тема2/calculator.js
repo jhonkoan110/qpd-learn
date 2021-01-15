@@ -119,23 +119,23 @@ function Calculator(startVal) {
             // Если в массиве есть данная операция, вызывается ф-я
             // в которую передаётся массив и знак операции
             if (this.state.includes('*')) {
-                makeOperation(this.state, '*');
+                this.makeOperation(this.state, '*');
                 // В массиве может быть несколько знаков '*',
                 // поэтому цикл пробегается по нему заново
                 i = 0;
             }
 
             if (this.state.includes('/')) {
-                makeOperation(this.state, '/');
+                this.makeOperation(this.state, '/');
                 i = 0;
             }
 
             if (this.state.includes('+')) {
-                makeOperation(this.state, '+');
+                this.makeOperation(this.state, '+');
                 i = 0;
             }
             if (this.state.includes('-')) {
-                makeOperation(this.state, '-');
+                this.makeOperation(this.state, '-');
                 i = 0;
             }
         }
@@ -144,7 +144,7 @@ function Calculator(startVal) {
     };
 }
 
-const calc = new Calculator(10);
+const calc = new Calculator(-5);
 
 console.log(calc.state);
 
