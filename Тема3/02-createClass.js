@@ -15,13 +15,16 @@
 // ===============================================
 
 function createClass(options) {
+    // С помощью деструктуризации из options берётся constructor
+    // И все оставшиеся методы, которые есть в options
     const { constructor, ...methods } = options;
-    console.log(methods);
 
     return function () {
         // Вызывается функция-контруктор с привязанным контекстом
         // arguments - любое кол-во аргументов, которые попадают в constructor
         constructor.apply(this, arguments);
+        // Также можно записать
+        // constructor.call(this, ...arguments);
 
         // В prototype этого класса записываются все функции из объекта methods,
         // который пришёл в аргументе createClass
