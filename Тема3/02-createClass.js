@@ -75,9 +75,14 @@ const User = createClass({
     },
 });
 
+User.prototype.showNumber = function (num) {
+    console.log(num);
+};
+
 // Экземпляр класса User
 const user = new User('kirill', 25);
 user.meow(); // Meow, I'm kirill
+user.showNumber(22); // 22
 
 // ================================================
 
