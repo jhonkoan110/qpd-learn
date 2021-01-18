@@ -14,12 +14,30 @@
 
 // ===============================================
 
+class ConstructorError extends Error {
+    constructor(message) {
+        super(message);
+
+        this.name = 'ConstructorError';
+    }
+}
+
 function createClass(options) {
     // С помощью деструктуризации из options берётся constructor
     // И все оставшиеся методы, которые есть в options
     const { constructor, ...methods } = options;
 
     return function () {
+        // Проверка на вызов со словом new
+        try {
+            if (!new.target) {
+                throw new ConstructorError('Функция вызвана без ключевого слова "new"');
+            }
+        } catch (e) {
+            console.log(e.name);
+            console.log(e.message);
+        }
+
         // Вызывается функция-контруктор с привязанным контекстом
         // arguments - любое кол-во аргументов, которые попадают в constructor
         constructor.apply(this, arguments);
