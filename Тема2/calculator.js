@@ -24,6 +24,8 @@ function Calculator(startVal) {
     this.state[0] = startVal;
     // Массив операций
     this.operations = ['+', '-', '*', '/'];
+
+    // Проводит проверку на нечисловое значение
     // Добавляет в главный массив(this.state) знак умножения и число
     // Знак умножения берёт из массива знаков операций. Следущие методы по аналогии.
     this.addToState = function (op, val) {
@@ -37,7 +39,6 @@ function Calculator(startVal) {
     };
 
     // Метод умножения. Принимает в себя число
-    // Проводит проверку на нечисловое значение
     this.multiply = function (val) {
         this.addToState('*', val);
         return this;
