@@ -14,6 +14,12 @@
 
 // ===============================================
 
+// Написать функцию createClass, которая принимает объект
+// вида { constructor, …properties, …methods }  и возвращает
+// функцию, аналогичную классу ES6, созданному с таким же
+// конструктором, методами и свойствами. При это сам
+// синтаксис классов из ES6 использовать нельзя.
+
 class ConstructorError extends Error {
     constructor(message) {
         super(message);
@@ -22,6 +28,7 @@ class ConstructorError extends Error {
     }
 }
 
+// Функция создания класса
 function createClass(options) {
     // С помощью деструктуризации из options берётся constructor
     // И все оставшиеся методы, которые есть в options
@@ -54,6 +61,7 @@ function createClass(options) {
     };
 }
 
+// Создаётся класс User
 const User = createClass({
     constructor(name, age) {
         this.name = name;
@@ -62,8 +70,12 @@ const User = createClass({
     meow: function () {
         console.log(`Meow, I'm ${this.name}`);
     },
+    sayHello() {
+        console.log('hello');
+    },
 });
 
+// Экземпляр класса User
 const user = new User('kirill', 25);
 user.meow(); // Meow, I'm kirill
 
