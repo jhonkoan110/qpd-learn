@@ -1,19 +1,5 @@
 'use strict';
 
-// function User(name) {
-//     this.name = name;
-// }
-
-// User.prototype.sayHello = function () {
-//     console.log(this.name);
-// };
-
-// const user = new User('kirill');
-
-// user.sayHello();
-
-// ===============================================
-
 // Написать функцию createClass, которая принимает объект
 // вида { constructor, …properties, …methods }  и возвращает
 // функцию, аналогичную классу ES6, созданному с таким же
@@ -32,7 +18,7 @@ class ConstructorError extends Error {
 function createClass(options) {
     // С помощью деструктуризации из options берётся constructor
     // И все оставшиеся методы, которые есть в options
-    const { constructor, ...methods } = options;
+    const { constructor, ...fields } = options;
 
     return function () {
         // Проверка на вызов со словом new
@@ -51,12 +37,23 @@ function createClass(options) {
         // Также можно записать
         // constructor.call(this, ...arguments);
 
-        // В prototype этого класса записываются все функции из объекта methods,
+        // В prototype этого класса записываются все функции из объекта fields,
         // который пришёл в аргументе createClass
-        for (let key in methods) {
+        for (let key in fields) {
             // key - имя функции
-            // methods[key] - сама функция(её значение)
-            Object.getPrototypeOf(this)[key] = methods[key];
+            // fields[key] - сама функция(её значение)
+            // Если поле является методом, то добавить его в прототип объекта
+            if (typeof fields[key] === 'function') {
+                Object.defineProperty(Object.getPrototypeOf(this), key, {
+                    value: fields[key],
+                    enumerable: false,
+                });
+                // Если нет, то добавить свойство обьекту
+            } else {
+                Object.defineProperty(this, key, {
+                    value: fields[key],
+                });
+            }
         }
     };
 }
@@ -67,6 +64,8 @@ const User = createClass({
         this.name = name;
         this.age = age;
     },
+    a: 23,
+    gender: 'male',
     meow: function () {
         console.log(`Meow, I'm ${this.name}`);
     },
@@ -83,21 +82,3 @@ User.prototype.showNumber = function (num) {
 const user = new User('kirill', 25);
 user.meow(); // Meow, I'm kirill
 user.showNumber(22); // 22
-
-// ================================================
-
-// const methods = [];
-
-// function f1() {}
-// function f2() {}
-// function f3() {}
-
-// methods.push(f1, f2, f3);
-
-// function User() {}
-
-// for (let i = 0; i < methods.length; i++) {
-//     User.prototype[methods[i].name] = methods[i];
-// }
-
-// let user = new User();

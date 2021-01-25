@@ -4,11 +4,7 @@ function Calculator(startVal) {
     try {
         // Если функция Calculator была вызывана без ключевого слова 'new'
         // или в неё передали не число, выбрасывается ошибка
-        if (
-            !new.target ||
-            typeof startVal !== 'number' ||
-            (typeof startVal === 'number' && isNaN(startVal))
-        ) {
+        if (!new.target || !checkVal(startVal)) {
             throw new UserException(
                 'Функция должна быть вызвана с оператором new, а аргументом ф-и должно быть число',
             );
@@ -18,17 +14,32 @@ function Calculator(startVal) {
         console.log(e.message);
     }
 
-    // Массив всего выражения
-    this.state = [];
-    // Стартовое значение всего выражения
-    this.state[0] = startVal;
+    // Массив всего выражения со стартовым значением
+    this.state = [startVal];
+
     // Массив операций
     this.operations = ['+', '-', '*', '/'];
 
+    // Проверка входящего значение на число и NaN
+    // Возвращает false, если val не число, либо если val = NaN
+    function checkVal(val) {
+        if (typeof val !== 'number' || (typeof val === 'number' && isNaN(val))) {
+            return false;
+        }
+        return true;
+    }
+
+    // Конструктор пользовательской ошибки, принимает в себя строку
+    // с сообщением ошибки
+    function UserException(message) {
+        this.message = message;
+        this.name = 'Исключение, определённое пользователем';
+    }
+
     // Проводит проверку на нечисловое значение
-    // Добавляет в главный массив(this.state) знак умножения и число
-    // Знак умножения берёт из массива знаков операций. Следущие методы по аналогии.
-    this.addToState = function (op, val) {
+    // Добавляет в главный массив(this.state) знак операции и число
+    // Знак операции берёт из массива знаков операций
+    const addToState = (op, val) => {
         if (checkVal(val)) {
             const opIndex = this.operations.indexOf(op);
             const opSymbol = this.operations[opIndex];
@@ -38,30 +49,30 @@ function Calculator(startVal) {
         }
     };
 
-    // Метод умножения. Принимает в себя число
+    // Метод умножения
     this.multiply = function (val) {
-        this.addToState('*', val);
+        addToState('*', val);
         return this;
     };
-    // По аналогии
+    // Метод деления
     this.divide = function (val) {
-        this.addToState('/', val);
+        addToState('/', val);
         return this;
     };
-    // По аналогии
+    // Метод сложения
     this.plus = function (val) {
-        this.addToState('+', val);
+        addToState('+', val);
         return this;
     };
-    // По аналогии
+    // Метод вычитания
     this.minus = function (val) {
-        this.addToState('-', val);
+        addToState('-', val);
         return this;
     };
 
     // Производит конкретную операцию над двумя операндами
     // Принимает в себя массив и знак операции
-    this.makeOperation = function (array, op) {
+    function makeOperation(array, op) {
         // Находит в массиве индекс знака операции, например '*'
         const opIndex = array.indexOf(op);
 
@@ -98,7 +109,7 @@ function Calculator(startVal) {
                 break;
             }
         }
-    };
+    }
 
     // Вычисление всего выражения
     // Пробегается в цикле по массиву выражения
@@ -114,28 +125,28 @@ function Calculator(startVal) {
                 const divideIndex = this.state.indexOf('/');
                 // Если умножения в массиве нет, и есть деление, выполнить деление
                 if (multiplyIndex === -1 && divideIndex !== -1) {
-                    this.makeOperation(this.state, '/');
+                    makeOperation(this.state, '/');
                     i = 0;
                     // Если деления в массиве нет, и есть умножение, выполнить умножение
                 } else if (multiplyIndex !== -1 && divideIndex === -1) {
-                    this.makeOperation(this.state, '*');
+                    makeOperation(this.state, '*');
                     i = 0;
                     // Если есть и умножение и деление, выполнить ту операцию, которая идёт раньше
                 } else if (multiplyIndex < divideIndex) {
-                    this.makeOperation(this.state, '*');
+                    makeOperation(this.state, '*');
                     i = 0;
                 } else {
-                    this.makeOperation(this.state, '/');
+                    makeOperation(this.state, '/');
                     i = 0;
                 }
                 // Елси нет ни умножения, ни деления, перейти к вычитанию и сложнению
             } else {
                 if (this.state.includes('+')) {
-                    this.makeOperation(this.state, '+');
+                    makeOperation(this.state, '+');
                     i = 0;
                 }
                 if (this.state.includes('-')) {
-                    this.makeOperation(this.state, '-');
+                    makeOperation(this.state, '-');
                     i = 0;
                 }
             }
@@ -151,19 +162,3 @@ const calc = new Calculator(1);
 calc.plus(2).multiply(3).plus(12).divide(2).divide(3).multiply(4);
 
 console.log(calc.calculate());
-
-// Проверка входящего значение на число и NaN
-// Возвращает false, если val не число, либо если val = NaN
-function checkVal(val) {
-    if (typeof val !== 'number' || (typeof val === 'number' && isNaN(val))) {
-        return false;
-    }
-    return true;
-}
-
-// Конструктор пользовательской ошибки, принимает в себя строку
-// с сообщением ошибки
-function UserException(message) {
-    this.message = message;
-    this.name = 'Исключение, определённое пользователем';
-}
