@@ -46,17 +46,31 @@
     padding: 0 0.6rem;
 }
 
+.header__nav-item a {
+    color: var(--color-background);
+}
+
 .header__nav-item:last-child {
     border-left: 2px solid var(--color-background);
 }
 
-.header__nav-item:hover {
+.header__nav-item a:hover {
     color: var(--color-white);
     text-decoration-color: var(--color-white);
     cursor: pointer;
 }
 
+.header__nav-item a.active {
+    color: #8fb6ff;
+    text-decoration-color: #8fb6ff;
+}
+
 .header__nav-add-task {
     font-size: 1.3rem;
     line-height: 3.06rem;
+}
+
+.header__add-item {
+    color: #fff;
+    text-decoration: none;
 }

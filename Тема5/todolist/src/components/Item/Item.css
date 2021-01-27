@@ -1,0 +1,39 @@
+.item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0.53rem 1.06rem;
+
+    border-bottom: 2px solid var(--color-main);
+}
+
+.item__content {
+    font-size: 1.2rem;
+    width: 96%;
+}
+
+.item__content h4 {
+    margin-bottom: 1rem;
+    font-style: normal;
+    font-weight: 500;
+}
+
+.item__content p {
+    color: #808080;
+    font-style: normal;
+    font-weight: 400;
+    text-align: justify;
+}
+
+.item__actions {
+    display: flex;
+    font-size: 1rem;
+}
+.fa {
+    font-size: 20px;
+}
+
+.item__edit {
+    margin-right: 15px;
+}
