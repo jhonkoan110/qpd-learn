@@ -1,4 +1,4 @@
-import { DELETE_TASK } from './actionTypes';
+import { ADD_TASK, DELETE_TASK, EDIT_TASK } from './actionTypes';
 
 export interface ITask {
     id: number;
@@ -27,6 +27,21 @@ const tasksReducer = (state: InitialStateType = initialState, action: any): Init
                 ...state,
                 tasks: state.tasks.filter((task) => task.id !== action.id),
             };
+        }
+
+        case ADD_TASK: {
+            return { ...state, tasks: [...state.tasks, action.payload] };
+        }
+
+        case EDIT_TASK: {
+            const newTasks: Array<ITask> = state.tasks.map((item) => {
+                if (item.id === action.updatedTask.id) {
+                    item = action.updatedTask;
+                }
+                return item;
+            });
+
+            return { ...state, tasks: newTasks };
         }
 
         default:

@@ -4,6 +4,8 @@ import { NavLink, Route, Switch } from 'react-router-dom';
 import { addCategory } from '../../redux/categories/actions';
 import { CategoryType } from '../../redux/categories/reducer';
 import { AppStateType } from '../../redux/store';
+import { addTask } from '../../redux/tasks/actions';
+import { ITask } from '../../redux/tasks/reducer';
 import Modal from '../Modal/Modal';
 import './Header.css';
 
@@ -12,16 +14,18 @@ const Header: React.FC = () => {
     const [descriptionText, setDescriptionText] = useState('');
     const dispatch = useDispatch();
 
+    const tasks: Array<ITask> = useSelector((state: AppStateType) => state.tasks.tasks);
+
     const categories: Array<CategoryType> = useSelector(
         (state: AppStateType) => state.categories.categories,
     );
 
-    const changeTitleTextInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const changeAddTitleTextInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const text = e.target.value;
         setTitleText(text);
     };
 
-    const changeDescriptionTextInputHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const changeAddDescriptionTextInputHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
         const text = e.target.value;
         setDescriptionText(text);
     };
@@ -36,6 +40,18 @@ const Header: React.FC = () => {
         };
 
         dispatch(addCategory(newCategory));
+        setTitleText('');
+        setDescriptionText('');
+    };
+
+    const createTaskButtonClickHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        const newTask: ITask = {
+            id: tasks.length + 1,
+            title: titleText,
+            description: descriptionText,
+        };
+
+        dispatch(addTask(newTask));
         setTitleText('');
         setDescriptionText('');
     };
@@ -65,10 +81,18 @@ const Header: React.FC = () => {
                                 Добавить задачу
                             </a>
                             <Modal
+                                id={0}
+                                title=""
+                                description=""
                                 heading="Добавить задачу"
                                 cssId="open-create-task-modal"
+                                titleText={titleText}
+                                descriptionText={descriptionText}
                                 isTask={true}
                                 categories={categories}
+                                changeAddTitleText={changeAddTitleTextInputHandler}
+                                changeAddDescriptionText={changeAddDescriptionTextInputHandler}
+                                createTask={createTaskButtonClickHandler}
                             />
                         </Route>
                         <Route path="/categories">
@@ -76,12 +100,15 @@ const Header: React.FC = () => {
                                 Добавить категорию
                             </a>
                             <Modal
+                                id={0}
+                                title=""
+                                description=""
                                 heading="Добавить категорию"
                                 cssId="open-create-category-modal"
                                 titleText={titleText}
                                 descriptionText={descriptionText}
-                                changeTitleText={changeTitleTextInputHandler}
-                                changeDescriptionText={changeDescriptionTextInputHandler}
+                                changeAddTitleText={changeAddTitleTextInputHandler}
+                                changeAddDescriptionText={changeAddDescriptionTextInputHandler}
                                 createCategory={createCategoryButtonClickHandler}
                             />
                         </Route>

@@ -80,6 +80,11 @@
     padding: 0 8px 4px 8px;
 }
 
+.modal__fieldset:hover,
+.modal__fieldset:focus {
+    border: 2px solid var(--color-hover);
+}
+
 .modal__fs1 {
     margin-bottom: 34px;
 }
@@ -153,6 +158,7 @@
 
 .modal__close-button:hover {
     cursor: pointer;
+    color: var(--color-hover);
     background-color: rgba(37, 127, 234, 0.2);
     border: 2px solid var(--color-hover);
 }

@@ -1,14 +1,41 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { CategoryType } from '../../redux/categories/reducer';
 import './ModalInputs.css';
+import './Modal.css';
 
 interface IProps {
+    id: number;
+    isEditing?: boolean;
+    titleText?: string;
+    descriptionText?: string;
+    editTitleInputText?: string;
+    editDescriptionInputText?: string;
     categories?: Array<CategoryType>;
-    title?: string;
-    description?: string;
+    changeAddTitleText?: (e: ChangeEvent<HTMLInputElement>) => void;
+    changeAddDescriptionText?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+    createTask?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+    changeEditTitleText?: (e: ChangeEvent<HTMLInputElement>) => void;
+    changeEditDescriptionText?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+    saveTask: (id: number) => void;
+    endEditing?: () => void;
 }
 
-const TaskModal: React.FC<IProps> = ({ title, description, categories }) => {
+const TaskModal: React.FC<IProps> = ({
+    id,
+    isEditing,
+    categories,
+    titleText,
+    descriptionText,
+    editTitleInputText,
+    editDescriptionInputText,
+    changeAddTitleText,
+    changeAddDescriptionText,
+    createTask,
+    changeEditTitleText,
+    changeEditDescriptionText,
+    saveTask,
+    endEditing,
+}) => {
     return (
         <div>
             <div className="modal__task-container">
@@ -22,7 +49,8 @@ const TaskModal: React.FC<IProps> = ({ title, description, categories }) => {
                         placeholder="Введите имя задачи"
                         required={true}
                         maxLength={255}
-                        value={title || undefined}
+                        value={titleText || editTitleInputText}
+                        onChange={changeAddTitleText || changeEditTitleText}
                     />
                 </fieldset>
                 <fieldset className="modal__fieldset task-modal__fieldset">
@@ -39,16 +67,35 @@ const TaskModal: React.FC<IProps> = ({ title, description, categories }) => {
                 <textarea
                     className="modal__input modal__textarea"
                     placeholder="Введите описание задачи"
-                    maxLength={512}
-                    value={description || undefined}
+                    maxLength={1536}
+                    value={descriptionText || editDescriptionInputText}
+                    onChange={changeAddDescriptionText || changeEditDescriptionText}
                 />
             </fieldset>
             <div className="modal__buttons">
+                {isEditing ? (
+                    <a href="#close">
+                        <button
+                            className="modal__create-button"
+                            onClick={() => {
+                                saveTask(id);
+                                if (endEditing) endEditing();
+                            }}>
+                            Сохранить
+                        </button>
+                    </a>
+                ) : (
+                    <a href="#close">
+                        <button className="modal__create-button" onClick={createTask}>
+                            Создать
+                        </button>
+                    </a>
+                )}
+
                 <a href="#close">
-                    <button className="modal__create-button">Создать</button>
-                </a>
-                <a href="#close">
-                    <button className="modal__close-button">Закрыть</button>
+                    <button className="modal__close-button" onClick={endEditing}>
+                        Закрыть
+                    </button>
                 </a>
             </div>
         </div>

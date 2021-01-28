@@ -12,3 +12,8 @@ export type DeleteCategoryActionType = {
     type: typeof DELETE_CATEGORY;
     id: number;
 };
+
+export interface IEditCategory {
+    type: typeof EDIT_CATEGORY;
+    updatedCategory: CategoryType;
+}

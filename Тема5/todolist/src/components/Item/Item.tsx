@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Modal from '../Modal/Modal';
 import './Item.css';
 import editIcon from '../../assets/edit.png';
@@ -6,9 +6,9 @@ import deleteIcon from '../../assets/delete.png';
 import DeleteModal from '../Modal/DeleteModal';
 
 interface IProps {
-    title: string;
+    title: string | '';
     id: number;
-    description: string;
+    description: string | '';
     isTask: boolean;
     categoryId: number | undefined;
     cssId: string;
@@ -30,6 +30,16 @@ const CategoryItem: React.FC<IProps> = ({
     deleteHeading,
     deleteHandler,
 }) => {
+    const [isEditing, setIsEditing] = useState(false);
+
+    const startEditingButtonClick = () => {
+        setIsEditing(true);
+    };
+
+    const endEditingButtonClick = () => {
+        setIsEditing(false);
+    };
+
     return (
         <div className="item">
             <div className="item__content block">
@@ -39,7 +49,7 @@ const CategoryItem: React.FC<IProps> = ({
             <div className="item__actions">
                 <div className="item__edit">
                     <a href={`#${cssId}`}>
-                        <img src={editIcon} alt="edit icon" />
+                        <img src={editIcon} alt="edit icon" onClick={startEditingButtonClick} />
                     </a>
                 </div>
                 <div className="item__delete">
@@ -55,6 +65,8 @@ const CategoryItem: React.FC<IProps> = ({
                 description={description}
                 id={id}
                 isTask={isTask}
+                isEditing={isEditing}
+                endEditing={endEditingButtonClick}
             />
             <DeleteModal
                 id={id}

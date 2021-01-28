@@ -1,11 +1,12 @@
-import { ADD_CATEGORY, DELETE_CATEGORY } from './actionTypes';
+import { ADD_CATEGORY, DELETE_CATEGORY, EDIT_CATEGORY } from './actionTypes';
 export type CategoryType = {
     id: number;
-    title: string;
-    description: string;
+    title: string | '';
+    description: string | '';
 };
 
 export const initialState = {
+    currentId: null as number | null,
     categories: [
         {
             id: 1,
@@ -57,7 +58,25 @@ const categoryReducer = (state: InitialStateType = initialState, action: any): I
         }
 
         case ADD_CATEGORY: {
-            return { ...state, categories: [...state.categories, action.payload] };
+            if (action.payload.title !== '') {
+                return { ...state, categories: [...state.categories, action.payload] };
+            }
+            return state;
+        }
+
+        case EDIT_CATEGORY: {
+            const newCategories: Array<CategoryType> = state.categories.map((item) => {
+                if (item.id === action.updatedCategory.id) {
+                    item = action.updatedCategory;
+                }
+
+                return item;
+            });
+
+            return {
+                ...state,
+                categories: newCategories,
+            };
         }
 
         default:

@@ -23,12 +23,15 @@
     color: #808080;
     font-style: normal;
     font-weight: 400;
-    text-align: justify;
+    text-align: left;
+    word-wrap: break-word;
 }
 
 .item__actions {
     display: flex;
     font-size: 1rem;
+    margin-top: 20px;
+    align-self: flex-start;
 }
 .fa {
     font-size: 20px;
