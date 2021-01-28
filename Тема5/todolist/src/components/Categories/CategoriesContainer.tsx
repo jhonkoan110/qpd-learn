@@ -1,11 +1,13 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
+import { deleteCategory } from '../../redux/categories/actions';
 import { CategoryType } from '../../redux/categories/reducer';
 import { AppStateType } from '../../redux/store';
 import Categories from './Categories';
 
 interface IProps {
     categories: Array<CategoryType>;
+    deleteCategory: (id: number) => void;
 }
 
 interface IState {
@@ -27,7 +29,7 @@ class CategoriesContainer extends Component<IProps, IState> {
     }
 
     deleteHandler = (id: number) => {
-        console.log(`Задача с id: ${id} удалена`);
+        this.props.deleteCategory(id);
     };
 
     render() {
@@ -54,7 +56,9 @@ const mapStateToProps = (state: AppStateType) => {
 };
 
 const mapDispatchToProps = (dispatch: any) => {
-    return {};
+    return {
+        deleteCategory: (id: number) => dispatch(deleteCategory(id)),
+    };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategoriesContainer);

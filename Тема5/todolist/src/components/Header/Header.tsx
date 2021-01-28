@@ -1,11 +1,45 @@
-import React from 'react';
+import React, { ChangeEvent, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, Route, Switch } from 'react-router-dom';
+import { addCategory } from '../../redux/categories/actions';
+import { CategoryType } from '../../redux/categories/reducer';
+import { AppStateType } from '../../redux/store';
 import Modal from '../Modal/Modal';
 import './Header.css';
 
-interface IProps {}
+const Header: React.FC = () => {
+    const [titleText, setTitleText] = useState('');
+    const [descriptionText, setDescriptionText] = useState('');
+    const dispatch = useDispatch();
 
-const Header: React.FC<IProps> = () => {
+    const categories: Array<CategoryType> = useSelector(
+        (state: AppStateType) => state.categories.categories,
+    );
+
+    const changeTitleTextInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        const text = e.target.value;
+        setTitleText(text);
+    };
+
+    const changeDescriptionTextInputHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        const text = e.target.value;
+        setDescriptionText(text);
+    };
+
+    const createCategoryButtonClickHandler = (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    ) => {
+        const newCategory: CategoryType = {
+            id: categories.length + 1,
+            title: titleText,
+            description: descriptionText,
+        };
+
+        dispatch(addCategory(newCategory));
+        setTitleText('');
+        setDescriptionText('');
+    };
+
     return (
         <header className="header">
             <div className="header__inner">
@@ -34,6 +68,7 @@ const Header: React.FC<IProps> = () => {
                                 heading="Добавить задачу"
                                 cssId="open-create-task-modal"
                                 isTask={true}
+                                categories={categories}
                             />
                         </Route>
                         <Route path="/categories">
@@ -43,6 +78,11 @@ const Header: React.FC<IProps> = () => {
                             <Modal
                                 heading="Добавить категорию"
                                 cssId="open-create-category-modal"
+                                titleText={titleText}
+                                descriptionText={descriptionText}
+                                changeTitleText={changeTitleTextInputHandler}
+                                changeDescriptionText={changeDescriptionTextInputHandler}
+                                createCategory={createCategoryButtonClickHandler}
                             />
                         </Route>
                     </Switch>

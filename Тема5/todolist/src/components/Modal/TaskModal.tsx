@@ -1,12 +1,14 @@
 import React from 'react';
+import { CategoryType } from '../../redux/categories/reducer';
 import './ModalInputs.css';
 
 interface IProps {
+    categories?: Array<CategoryType>;
     title?: string;
     description?: string;
 }
 
-const TaskModal: React.FC<IProps> = ({ title, description }) => {
+const TaskModal: React.FC<IProps> = ({ title, description, categories }) => {
     return (
         <div>
             <div className="modal__task-container">
@@ -26,9 +28,9 @@ const TaskModal: React.FC<IProps> = ({ title, description }) => {
                 <fieldset className="modal__fieldset task-modal__fieldset">
                     <legend className="modal__legend task-modal__legend">Категория</legend>
                     <select name="category" id="category__select" className="modal__select">
-                        <option value="123">html</option>
-                        <option value="">css</option>
-                        <option value="">js</option>
+                        {categories?.map((item) => {
+                            return <option value={item.title}>{item.title}</option>;
+                        })}
                     </select>
                 </fieldset>
             </div>

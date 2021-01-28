@@ -1,4 +1,4 @@
-import { DELETE_CATEGORY } from './actionTypes';
+import { ADD_CATEGORY, DELETE_CATEGORY } from './actionTypes';
 export type CategoryType = {
     id: number;
     title: string;
@@ -54,6 +54,10 @@ const categoryReducer = (state: InitialStateType = initialState, action: any): I
                 ...state,
                 categories: state.categories.filter((item) => item.id !== action.id),
             };
+        }
+
+        case ADD_CATEGORY: {
+            return { ...state, categories: [...state.categories, action.payload] };
         }
 
         default:

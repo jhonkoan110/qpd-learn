@@ -2,13 +2,22 @@ import React from 'react';
 import './DeleteModal.css';
 
 interface IProps {
+    id: number;
     deleteCssId: string;
     deleteHeading: string;
     isTask: boolean;
     title: string;
+    deleteHandler: (id: number) => void;
 }
 
-const DeleteModal: React.FC<IProps> = ({ deleteCssId, deleteHeading, isTask, title }) => {
+const DeleteModal: React.FC<IProps> = ({
+    id,
+    deleteCssId,
+    deleteHeading,
+    isTask,
+    title,
+    deleteHandler,
+}) => {
     return (
         <div id={deleteCssId} className="modal">
             <div className="modal__wrapper delete-modal">
@@ -27,7 +36,13 @@ const DeleteModal: React.FC<IProps> = ({ deleteCssId, deleteHeading, isTask, tit
                 )}
 
                 <div className="modal__buttons">
-                    <button className="modal__create-button delete-modal__button">Да</button>
+                    <a href="#close">
+                        <button
+                            className="modal__create-button delete-modal__button"
+                            onClick={() => deleteHandler(id)}>
+                            Да
+                        </button>
+                    </a>
                     <a href="#close">
                         <button className="modal__close-button delete-modal__button">Нет</button>
                     </a>

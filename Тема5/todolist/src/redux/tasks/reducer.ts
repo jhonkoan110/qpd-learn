@@ -1,3 +1,5 @@
+import { DELETE_TASK } from './actionTypes';
+
 export interface ITask {
     id: number;
     title: string;
@@ -20,6 +22,13 @@ export type InitialStateType = typeof initialState;
 
 const tasksReducer = (state: InitialStateType = initialState, action: any): InitialStateType => {
     switch (action.type) {
+        case DELETE_TASK: {
+            return {
+                ...state,
+                tasks: state.tasks.filter((task) => task.id !== action.id),
+            };
+        }
+
         default:
             return state;
     }

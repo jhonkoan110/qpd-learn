@@ -1,11 +1,13 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppStateType } from '../../redux/store';
+import { deleteTask } from '../../redux/tasks/actions';
 import { ITask } from '../../redux/tasks/reducer';
 import Tasks from './Tasks';
 
 interface IProps {
     tasks: Array<ITask>;
+    deleteTask: (id: number) => void;
 }
 
 interface IState {
@@ -28,7 +30,9 @@ class TasksContainer extends Component<IProps, IState> {
         };
     }
 
-    deleteHandler = (id: number) => {};
+    deleteTaskHandler = (id: number) => {
+        this.props.deleteTask(id);
+    };
 
     render() {
         const { tasks } = this.props;
@@ -36,7 +40,7 @@ class TasksContainer extends Component<IProps, IState> {
         return (
             <Tasks
                 tasks={tasks}
-                deleteHandler={this.deleteHandler}
+                deleteHandler={this.deleteTaskHandler}
                 isTask={isTask}
                 cssId={cssId}
                 heading={heading}
@@ -54,7 +58,9 @@ const mapStateToProps = (state: AppStateType) => {
 };
 
 const mapDispatchToProps = (dispatch: any) => {
-    return {};
+    return {
+        deleteTask: (id: number) => dispatch(deleteTask(id)),
+    };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TasksContainer);

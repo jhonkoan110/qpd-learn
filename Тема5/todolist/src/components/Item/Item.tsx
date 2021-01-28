@@ -44,7 +44,7 @@ const CategoryItem: React.FC<IProps> = ({
                 </div>
                 <div className="item__delete">
                     <a href={`#${deleteCssId}`}>
-                        <img src={deleteIcon} alt="delete icon" onClick={() => deleteHandler(id)} />
+                        <img src={deleteIcon} alt="delete icon" />
                     </a>
                 </div>
             </div>
@@ -57,10 +57,12 @@ const CategoryItem: React.FC<IProps> = ({
                 isTask={isTask}
             />
             <DeleteModal
+                id={id}
                 isTask={isTask}
                 title={title}
                 deleteCssId={deleteCssId}
                 deleteHeading={deleteHeading}
+                deleteHandler={deleteHandler}
             />
         </div>
     );

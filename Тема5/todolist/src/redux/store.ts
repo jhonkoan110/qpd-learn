@@ -1,11 +1,9 @@
 import { combineReducers, createStore, compose } from 'redux';
-import appReducer from './app/reducer';
 import categoryReducer from './categories/reducer';
 import tasksReducer from './tasks/reducer';
 
 const rootReducer = combineReducers({
     categories: categoryReducer,
-    global: appReducer,
     tasks: tasksReducer,
 });
 
