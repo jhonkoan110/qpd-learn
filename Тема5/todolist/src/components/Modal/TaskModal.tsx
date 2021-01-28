@@ -43,6 +43,14 @@ const TaskModal: React.FC<IProps> = ({ title, description, categories }) => {
                     value={description || undefined}
                 />
             </fieldset>
+            <div className="modal__buttons">
+                <a href="#close">
+                    <button className="modal__create-button">Создать</button>
+                </a>
+                <a href="#close">
+                    <button className="modal__close-button">Закрыть</button>
+                </a>
+            </div>
         </div>
     );
 };

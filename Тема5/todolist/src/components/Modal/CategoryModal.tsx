@@ -27,7 +27,6 @@ const CategoryModal: React.FC<IProps> = ({
                     Имя<span className="require-span">*</span>
                 </legend>
                 <input
-                    id="titleText"
                     className="modal__input"
                     type="text"
                     placeholder="Введите имя категории"
@@ -40,7 +39,6 @@ const CategoryModal: React.FC<IProps> = ({
             <fieldset className="modal__fieldset modal__fs2 task-modal__fieldset">
                 <legend className="modal__legend task-modal__legend">Описание</legend>
                 <textarea
-                    id="descriptionText"
                     className="modal__input modal__textarea"
                     placeholder="Введите описание категории"
                     maxLength={512}
