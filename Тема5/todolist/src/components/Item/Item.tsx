@@ -1,43 +1,48 @@
 import React, { useState } from 'react';
-import Modal from '../Modal/Modal';
 import './Item.css';
 import editIcon from '../../assets/edit.png';
 import deleteIcon from '../../assets/delete.png';
-import DeleteModal from '../Modal/DeleteModal';
+import DeleteModal from '../Modal/DeleteModal/DeleteModal';
+import CategoryModal from '../Modal/CategoryModal/CategoryModal';
+import TasksModal from '../Modal/TasksModal/TasksModal';
 
 interface IProps {
-    title: string | '';
+    isCategory?: boolean;
+    isTask?: boolean;
     id: number;
-    description: string | '';
-    isTask: boolean;
-    categoryId: number | undefined;
-    cssId: string;
-    heading: string;
-    deleteCssId: string;
-    deleteHeading: string;
-    deleteHandler: (id: number) => void;
+    title: string;
+    description: string;
+    deleteItem: (id: number) => void;
 }
 
 const CategoryItem: React.FC<IProps> = ({
+    isTask,
+    isCategory,
     id,
     title,
     description,
-    categoryId,
-    isTask,
-    cssId,
-    heading,
-    deleteCssId,
-    deleteHeading,
-    deleteHandler,
+    deleteItem,
 }) => {
-    const [isEditing, setIsEditing] = useState(false);
+    const [activeDeleteModal, setActiveDeleteModal] = useState(false);
+    const [activeEditModal, setActiveEditModal] = useState(false);
+    const [isEdit, setIsEdit] = useState(false);
 
-    const startEditingButtonClick = () => {
-        setIsEditing(true);
+    const openEditModalHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        setActiveEditModal(true);
+        setIsEdit(true);
     };
 
-    const endEditingButtonClick = () => {
-        setIsEditing(false);
+    const closeEditOpenHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        setActiveEditModal(false);
+        setIsEdit(false);
+    };
+
+    const openDeleteModalHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        setActiveDeleteModal(true);
+    };
+
+    const closeDeleteModalHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        setActiveDeleteModal(false);
     };
 
     return (
@@ -48,34 +53,46 @@ const CategoryItem: React.FC<IProps> = ({
             </div>
             <div className="item__actions">
                 <div className="item__edit">
-                    <a href={`#${cssId}`}>
-                        <img src={editIcon} alt="edit icon" onClick={startEditingButtonClick} />
-                    </a>
+                    <button className="item__button" onClick={openEditModalHandler}>
+                        <img src={editIcon} alt="edit icon" />
+                    </button>
+                    {activeEditModal && isCategory && (
+                        <CategoryModal
+                            id={id}
+                            isEdit={isEdit}
+                            editTitle={title}
+                            editDescription={description}
+                            modalHeader="Редактирование категории"
+                            modalButtonText="Сохранить"
+                            closeModal={closeEditOpenHandler}
+                        />
+                    )}
+                    {activeEditModal && isTask && (
+                        <TasksModal
+                            id={id}
+                            isEdit={isEdit}
+                            editTitle={title}
+                            editDescription={description}
+                            modalHeader="Редактирование задачи"
+                            modalButtonText="Сохранить"
+                            closeModal={closeEditOpenHandler}
+                        />
+                    )}
                 </div>
                 <div className="item__delete">
-                    <a href={`#${deleteCssId}`}>
+                    <button className="item__button" onClick={openDeleteModalHandler}>
                         <img src={deleteIcon} alt="delete icon" />
-                    </a>
+                    </button>
+                    {activeDeleteModal && (
+                        <DeleteModal
+                            id={id}
+                            title={title}
+                            onAcceptClick={deleteItem}
+                            onCancelClick={closeDeleteModalHandler}
+                        />
+                    )}
                 </div>
             </div>
-            <Modal
-                heading={heading}
-                cssId={cssId}
-                title={title}
-                description={description}
-                id={id}
-                isTask={isTask}
-                isEditing={isEditing}
-                endEditing={endEditingButtonClick}
-            />
-            <DeleteModal
-                id={id}
-                isTask={isTask}
-                title={title}
-                deleteCssId={deleteCssId}
-                deleteHeading={deleteHeading}
-                deleteHandler={deleteHandler}
-            />
         </div>
     );
 };

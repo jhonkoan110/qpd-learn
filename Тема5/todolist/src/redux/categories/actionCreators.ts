@@ -1,14 +1,14 @@
 import { CategoryType } from './reducer';
 import {
     ADD_CATEGORY,
-    DeleteCategoryActionType,
     DELETE_CATEGORY,
     EDIT_CATEGORY,
     IAddCategory,
+    IDeleteCategory,
     IEditCategory,
 } from './actionTypes';
 
-export const deleteCategory = (id: number): DeleteCategoryActionType => {
+export const deleteCategory = (id: number): IDeleteCategory => {
     return {
         type: DELETE_CATEGORY,
         id,

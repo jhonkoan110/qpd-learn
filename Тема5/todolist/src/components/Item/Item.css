@@ -40,3 +40,13 @@
 .item__edit {
     margin-right: 15px;
 }
+
+.item__button {
+    border: 0;
+    outline: 0;
+    background-color: var(--color-background);
+}
+
+.item__button:hover {
+    cursor: pointer;
+}

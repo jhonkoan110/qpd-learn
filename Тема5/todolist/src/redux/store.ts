@@ -3,8 +3,8 @@ import categoryReducer from './categories/reducer';
 import tasksReducer from './tasks/reducer';
 
 const rootReducer = combineReducers({
-    categories: categoryReducer,
-    tasks: tasksReducer,
+    categoryList: categoryReducer,
+    taskList: tasksReducer,
 });
 
 declare global {

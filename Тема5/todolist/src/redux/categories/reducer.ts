@@ -1,9 +1,9 @@
 import { ADD_CATEGORY, DELETE_CATEGORY, EDIT_CATEGORY } from './actionTypes';
-export type CategoryType = {
+export interface CategoryType {
     id: number;
     title: string | '';
     description: string | '';
-};
+}
 
 export const initialState = {
     currentId: null as number | null,

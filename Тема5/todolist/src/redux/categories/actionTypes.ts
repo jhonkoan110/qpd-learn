@@ -8,10 +8,10 @@ export interface IAddCategory {
     payload: CategoryType;
 }
 
-export type DeleteCategoryActionType = {
+export interface IDeleteCategory {
     type: typeof DELETE_CATEGORY;
     id: number;
-};
+}
 
 export interface IEditCategory {
     type: typeof EDIT_CATEGORY;

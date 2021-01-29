@@ -1,19 +1,27 @@
 .modal {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
     z-index: 9999;
-    opacity: 0;
+    opacity: 1;
     pointer-events: none;
-    transition: opacity 0.2s linear;
+
+    transition: 0.5s;
 }
 
-.modal:target {
-    opacity: 1;
-    pointer-events: auto;
+.modal__content {
+    pointer-events: all;
+    padding: 20px;
+    border-radius: 4px;
+    background-color: var(--color-background);
+    width: 800px;
+    position: relative;
 }
 
 .modal__heading {
@@ -36,8 +44,12 @@
 .close-modal {
     font-weight: 500;
     font-size: 50px;
+    background-color: var(--color-background);
     color: var(--color-main);
     text-decoration: none;
+
+    border: 0;
+    outline: 0;
 
     position: absolute;
     top: 8px;
@@ -46,6 +58,7 @@
 
 .close-modal:hover {
     color: var(--color-hover);
+    cursor: pointer;
 }
 
 .close-modal:active {
@@ -64,7 +77,10 @@
 
 .modal__task-container .modal__fs1 {
     margin-right: 24px;
-    margin-bottom: 0;
+}
+
+.task-modal__fieldset {
+    margin-right: 0;
 }
 
 .modal__select {

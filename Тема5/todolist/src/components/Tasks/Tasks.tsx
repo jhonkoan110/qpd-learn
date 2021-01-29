@@ -1,43 +1,28 @@
 import React from 'react';
-import { ITask } from '../../redux/tasks/reducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppStateType } from '../../redux/store';
+import { deleteTask } from '../../redux/tasks/actionCreators';
 import Item from '../Item/Item';
 import './Tasks.css';
 
-interface IProps {
-    tasks: Array<ITask>;
-    isTask: boolean;
-    cssId: string;
-    heading: string;
-    deleteCssId: string;
-    deleteHeading: string;
-    deleteHandler: (id: number) => void;
-}
+const Tasks = () => {
+    const tasks = useSelector((state: AppStateType) => state.taskList.tasks);
+    const dispatch = useDispatch();
 
-const Tasks: React.FC<IProps> = ({
-    tasks,
-    isTask,
-    cssId,
-    heading,
-    deleteCssId,
-    deleteHeading,
-    deleteHandler,
-}) => {
+    const deleteItemHandler = (id: number) => {
+        dispatch(deleteTask(id));
+    };
     return (
         <div className="tasks">
-            {tasks.map((item) => {
+            {tasks.map((task) => {
                 return (
                     <Item
-                        isTask={isTask}
-                        key={item.id}
-                        id={item.id}
-                        title={item.title}
-                        description={item.description}
-                        cssId={cssId + item.id}
-                        heading={heading}
-                        deleteCssId={deleteCssId + item.id}
-                        deleteHeading={deleteHeading}
-                        categoryId={item.categoryId || undefined}
-                        deleteHandler={deleteHandler}
+                        isTask={true}
+                        key={task.id}
+                        id={task.id}
+                        title={task.title}
+                        description={task.description}
+                        deleteItem={deleteItemHandler}
                     />
                 );
             })}
