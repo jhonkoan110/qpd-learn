@@ -22,6 +22,7 @@ const Tasks = () => {
                         id={task.id}
                         title={task.title}
                         description={task.description}
+                        deleteModalText="задачу"
                         deleteItem={deleteItemHandler}
                     />
                 );

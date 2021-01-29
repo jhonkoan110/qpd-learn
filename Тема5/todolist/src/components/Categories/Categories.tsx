@@ -18,6 +18,7 @@ const Categories: React.FC = () => {
             {categories.map((category) => {
                 return (
                     <Item
+                        deleteModalText="категорию"
                         isCategory={true}
                         key={category.id}
                         id={category.id}

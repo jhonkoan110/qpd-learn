@@ -7,6 +7,7 @@ import CategoryModal from '../Modal/CategoryModal/CategoryModal';
 import TasksModal from '../Modal/TasksModal/TasksModal';
 
 interface IProps {
+    deleteModalText: string;
     isCategory?: boolean;
     isTask?: boolean;
     id: number;
@@ -16,6 +17,7 @@ interface IProps {
 }
 
 const CategoryItem: React.FC<IProps> = ({
+    deleteModalText,
     isTask,
     isCategory,
     id,
@@ -87,6 +89,7 @@ const CategoryItem: React.FC<IProps> = ({
                         <DeleteModal
                             id={id}
                             title={title}
+                            deleteModalText={deleteModalText}
                             onAcceptClick={deleteItem}
                             onCancelClick={closeDeleteModalHandler}
                         />
