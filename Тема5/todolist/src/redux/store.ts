@@ -1,4 +1,5 @@
-import { combineReducers, createStore, compose } from 'redux';
+import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import categoryReducer from './categories/reducer';
 import tasksReducer from './tasks/reducer';
 
@@ -17,7 +18,7 @@ type RootReducerType = typeof rootReducer;
 export type AppStateType = ReturnType<RootReducerType>;
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(rootReducer, composeEnhancers());
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
 // @ts-ignore
 window.store = store;
 

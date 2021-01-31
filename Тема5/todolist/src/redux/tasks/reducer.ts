@@ -1,4 +1,11 @@
-import { ADD_TASK, DELETE_TASK, EDIT_TASK } from './actionTypes';
+import {
+    ADD_TASK,
+    DELETE_TASK,
+    EDIT_TASK,
+    SET_TASKS,
+    TASKS_IS_LOADING,
+    TASKS_INCREMENT_ID,
+} from './actionTypes';
 
 export interface ITask {
     id: number;
@@ -8,20 +15,27 @@ export interface ITask {
 }
 
 const initialState = {
-    tasks: [
-        { id: 1, title: 'Задача 1', description: 'Описание задачи 1' },
-        { id: 2, title: 'Задача 2', description: 'Описание задачи 2' },
-        { id: 3, title: 'Задача 3', description: 'Описание задачи 3' },
-        { id: 4, title: 'Задача 4', description: 'Описание задачи 4' },
-        { id: 5, title: 'Задача 5', description: 'Описание задачи 5' },
-        { id: 6, title: 'Задача 6', description: 'Описание задачи 6' },
-    ] as Array<ITask>,
+    currentId: 1,
+    isLoading: false,
+    hasErrored: false,
+    tasks: [] as Array<ITask>,
 };
 
 export type InitialStateType = typeof initialState;
 
 const tasksReducer = (state: InitialStateType = initialState, action: any): InitialStateType => {
     switch (action.type) {
+        case TASKS_IS_LOADING: {
+            return { ...state, isLoading: action.isLoading };
+        }
+
+        case SET_TASKS: {
+            return {
+                ...state,
+                tasks: action.tasks,
+            };
+        }
+
         case DELETE_TASK: {
             return {
                 ...state,
@@ -31,6 +45,10 @@ const tasksReducer = (state: InitialStateType = initialState, action: any): Init
 
         case ADD_TASK: {
             return { ...state, tasks: [...state.tasks, action.payload] };
+        }
+
+        case TASKS_INCREMENT_ID: {
+            return { ...state, currentId: state.currentId + 1 };
         }
 
         case EDIT_TASK: {

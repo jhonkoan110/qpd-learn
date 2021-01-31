@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addCategory, editCategory } from '../../../redux/categories/actionCreators';
+import {
+    addCategory,
+    addCategoryFetchData,
+    categoriesIncrementId,
+    editCategory,
+    editCategoryFetchData,
+} from '../../../redux/categories/actionCreators';
 import { CategoryType } from '../../../redux/categories/reducer';
 import { AppStateType } from '../../../redux/store';
+import IndexedDb from '../../../services/IndexedDB';
 import Buttons from '../Buttons/Buttons';
 import CloseButton from '../Buttons/CloseButton';
 import ModalButton from '../Buttons/ModalButton';
@@ -33,6 +40,7 @@ const CategoryModal: React.FC<IModalProps> = ({
     const [description, setDescription] = useState(editDescription ? editDescription : '');
     const dispatch = useDispatch();
     const categories = useSelector((state: AppStateType) => state.categoryList.categories);
+    const currentId = useSelector((state: AppStateType) => state.categoryList.currentId);
 
     const changeTitleHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value);
@@ -42,18 +50,20 @@ const CategoryModal: React.FC<IModalProps> = ({
         setDescription(e.target.value);
     };
 
+    // Добавление категории по кнопке "создать"
     const addCategoryHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         const newCategory: CategoryType = {
-            id: categories.length + 1,
+            id: currentId,
             title,
             description,
         };
 
-        dispatch(addCategory(newCategory));
+        dispatch(addCategoryFetchData(newCategory));
         setTitle('');
         setDescription('');
     };
 
+    // Редактирование категории по кнопке редактирования
     const editCategoryHandler = (id?: number) => {
         if (id) {
             const updatedCategory: CategoryType = {
@@ -61,7 +71,7 @@ const CategoryModal: React.FC<IModalProps> = ({
                 title,
                 description,
             };
-            dispatch(editCategory(updatedCategory));
+            dispatch(editCategoryFetchData(updatedCategory));
         }
     };
 

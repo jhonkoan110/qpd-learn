@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppStateType } from '../../../redux/store';
-import { addTask, editTask } from '../../../redux/tasks/actionCreators';
+import {
+    addTask,
+    addTaskFetchData,
+    editTask,
+    editTaskFetchData,
+} from '../../../redux/tasks/actionCreators';
 import { ITask } from '../../../redux/tasks/reducer';
+import IndexedDb from '../../../services/IndexedDB';
 import Buttons from '../Buttons/Buttons';
 import CloseButton from '../Buttons/CloseButton';
 import ModalButton from '../Buttons/ModalButton';
@@ -33,7 +39,7 @@ const TasksModal: React.FC<IModalProps> = ({
     const [title, setTitle] = useState(editTitle ? editTitle : '');
     const [description, setDescription] = useState(editDescription ? editDescription : '');
     const dispatch = useDispatch();
-    const tasks = useSelector((state: AppStateType) => state.taskList.tasks);
+    const currentId = useSelector((state: AppStateType) => state.taskList.currentId);
 
     const titleChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value);
@@ -45,12 +51,12 @@ const TasksModal: React.FC<IModalProps> = ({
 
     const addTaskHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         const newTask: ITask = {
-            id: tasks.length + 1,
+            id: currentId,
             title,
             description,
         };
+        dispatch(addTaskFetchData(newTask));
 
-        dispatch(addTask(newTask));
         setTitle('');
         setDescription('');
     };
@@ -62,7 +68,7 @@ const TasksModal: React.FC<IModalProps> = ({
                 title,
                 description,
             };
-            dispatch(editTask(updatedTask));
+            dispatch(editTaskFetchData(updatedTask));
         }
     };
 

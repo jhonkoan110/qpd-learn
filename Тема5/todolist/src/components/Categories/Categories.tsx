@@ -1,17 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteCategory } from '../../redux/categories/actionCreators';
+import {
+    categoriesFetchData,
+    deleteCategory,
+    deleteCategoryFetchData,
+} from '../../redux/categories/actionCreators';
 import { AppStateType } from '../../redux/store';
 import Item from '../Item/Item';
 import './Categories.css';
 
 const Categories: React.FC = () => {
     const categories = useSelector((state: AppStateType) => state.categoryList.categories);
+    const isLoading = useSelector((state: AppStateType) => state.categoryList.isLoading);
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        dispatch(categoriesFetchData());
+    }, []);
+
     const deleteItemHandler = (id: number) => {
-        dispatch(deleteCategory(id));
+        dispatch(deleteCategoryFetchData(id));
     };
+
+    if (isLoading) {
+        return <div className="categories">Загрузка...</div>;
+    }
 
     return (
         <div className="categories">
