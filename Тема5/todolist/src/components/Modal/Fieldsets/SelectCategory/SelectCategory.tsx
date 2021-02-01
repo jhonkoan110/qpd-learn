@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { AppStateType } from '../../../../redux/store';
+import './SelectCategory.css';
 
 interface SelectCategoryProps {
     selectedCategory: string;
@@ -12,7 +13,7 @@ const SelectCategory: React.FC<SelectCategoryProps> = ({ selectedCategory, onCha
     return (
         <fieldset className="modal__fieldset  task-modal__fieldset ml-24">
             <legend className="modal__legend task-modal__legend">Категория</legend>
-            <select
+            {/* <select
                 name="categories"
                 id="categories"
                 placeholder="Выберите категорию"
@@ -27,7 +28,19 @@ const SelectCategory: React.FC<SelectCategoryProps> = ({ selectedCategory, onCha
                         </option>
                     );
                 })}
-            </select>
+            </select> */}
+            <div className="dropdown">
+                <div className="dropdown-select">
+                    <span className="select">Selected item</span>
+                    <div className="triangle"></div>
+                </div>
+                <div className="dropdown-list">
+                    <div className="dropdown-list__item">Выберите категорию</div>
+                    {categories.map((item) => {
+                        return <div className="dropdown-list__item">{item.title}</div>;
+                    })}
+                </div>
+            </div>
         </fieldset>
     );
 };

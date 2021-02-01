@@ -1,15 +1,7 @@
-import { debug } from 'console';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppStateType } from '../../redux/store';
-import {
-    deleteTask,
-    deleteTaskFetchData,
-    setTasks,
-    tasksFetchData,
-    tasksIsLoading,
-} from '../../redux/tasks/actionCreators';
-import IndexedDb from '../../services/IndexedDB';
+import { deleteTaskFetchData, tasksFetchData } from '../../redux/tasks/actionCreators';
 import Item from '../Item/Item';
 import Loader from '../Loader/Loader';
 import './Tasks.css';
