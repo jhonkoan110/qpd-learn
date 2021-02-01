@@ -15,7 +15,7 @@ export interface ITask {
 }
 
 const initialState = {
-    currentId: 1,
+    currentId: 0,
     isLoading: false,
     hasErrored: false,
     tasks: [] as Array<ITask>,
@@ -33,6 +33,7 @@ const tasksReducer = (state: InitialStateType = initialState, action: any): Init
             return {
                 ...state,
                 tasks: action.tasks,
+                currentId: action.tasks.length ? action.tasks[action.tasks.length - 1].id : 0,
             };
         }
 

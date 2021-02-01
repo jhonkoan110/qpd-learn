@@ -9,7 +9,6 @@ import {
     TASKS_IS_LOADING,
 } from './actionTypes';
 import IndexedDb from '../../services/IndexedDB';
-import { Dispatch } from 'react';
 
 export const tasksIsLoading = (isLoading: boolean) => ({
     type: TASKS_IS_LOADING,
@@ -45,9 +44,12 @@ export const tasksFetchData = () => (dispatch: any) => {
     const runIndexedDb = async () => {
         const indexedDb = new IndexedDb('todolist');
         await indexedDb.createObjectStore(['tasks', 'categories']);
-        await indexedDb.getAllValue('tasks').then((tasks) => dispatch(setTasks(tasks)));
+        await indexedDb
+            .getAllValue('tasks')
+            .then((tasks) => dispatch(setTasks(tasks)))
+            .then(dispatch(tasksIsLoading(false)));
     };
-    runIndexedDb().then(dispatch(tasksIsLoading(false)));
+    runIndexedDb();
 };
 
 // Добавление новой задачи в редакс и в базу данных

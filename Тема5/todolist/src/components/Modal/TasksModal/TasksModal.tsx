@@ -1,14 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppStateType } from '../../../redux/store';
-import {
-    addTask,
-    addTaskFetchData,
-    editTask,
-    editTaskFetchData,
-} from '../../../redux/tasks/actionCreators';
+import { addTaskFetchData, editTaskFetchData } from '../../../redux/tasks/actionCreators';
 import { ITask } from '../../../redux/tasks/reducer';
-import IndexedDb from '../../../services/IndexedDB';
 import Buttons from '../Buttons/Buttons';
 import CloseButton from '../Buttons/CloseButton';
 import ModalButton from '../Buttons/ModalButton';
@@ -38,10 +32,13 @@ const TasksModal: React.FC<IModalProps> = ({
 }) => {
     const [title, setTitle] = useState(editTitle ? editTitle : '');
     const [description, setDescription] = useState(editDescription ? editDescription : '');
+    const [required, setRequired] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState('');
     const dispatch = useDispatch();
     const currentId = useSelector((state: AppStateType) => state.taskList.currentId);
 
     const titleChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setRequired(false);
         setTitle(e.target.value);
     };
 
@@ -49,26 +46,44 @@ const TasksModal: React.FC<IModalProps> = ({
         setDescription(e.target.value);
     };
 
-    const addTaskHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        const newTask: ITask = {
-            id: currentId,
-            title,
-            description,
-        };
-        dispatch(addTaskFetchData(newTask));
-
-        setTitle('');
-        setDescription('');
+    const selectChangeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedCategory(e.target.value);
     };
 
-    const editTaskHandler = (id?: number) => {
-        if (id) {
-            const updatedTask: ITask = {
-                id,
+    const optionChangeHandler = (e: React.ChangeEvent<HTMLOptionElement>) => {
+        const categoryId = e.target.getAttribute('category-id');
+        console.log(categoryId);
+    };
+
+    const addTaskHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        if (title === '') {
+            setRequired(true);
+        } else {
+            setRequired(false);
+            const newTask: ITask = {
+                id: currentId + 1,
                 title,
                 description,
             };
-            dispatch(editTaskFetchData(updatedTask));
+            dispatch(addTaskFetchData(newTask));
+
+            setTitle('');
+            setDescription('');
+        }
+    };
+
+    const editTaskHandler = (id?: number) => {
+        if (title === '') {
+            setRequired(true);
+        } else {
+            if (id) {
+                const updatedTask: ITask = {
+                    id,
+                    title,
+                    description,
+                };
+                dispatch(editTaskFetchData(updatedTask));
+            }
         }
     };
 
@@ -81,12 +96,20 @@ const TasksModal: React.FC<IModalProps> = ({
             <h1 className="modal__heading">{modalHeader}</h1>
             <div className="modal__task-container">
                 <Title
+                    required={required}
                     value={title}
                     placeholder="Введите имя задачи"
                     onChange={titleChangeHandler}
                 />
-                <SelectCategory />
+
+                <SelectCategory
+                    selectedCategory={selectedCategory}
+                    onChange={selectChangeHandler}
+                />
             </div>
+            <p className={required ? 'task__error-field-visible' : 'task__error-field'}>
+                Поле должно быть обязательным
+            </p>
 
             <Description
                 value={description}

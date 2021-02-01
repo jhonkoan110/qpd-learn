@@ -15,6 +15,7 @@ const Main = () => {
                     <Categories />
                 </Route>
             </Switch>
+            {/* <Loader /> */}
         </main>
     );
 };

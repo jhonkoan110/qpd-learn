@@ -3,14 +3,25 @@ import './Title.css';
 
 interface TitleProps {
     placeholder: string;
+    required: boolean;
     value?: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Title: React.FC<TitleProps> = ({ placeholder, value, onChange }) => {
+const Title: React.FC<TitleProps> = ({ placeholder, required, value, onChange }) => {
     return (
-        <fieldset className="modal__fieldset modal__fs1 task-modal__fieldset">
-            <legend className="modal__legend task-modal__legend">
+        <fieldset
+            className={
+                required
+                    ? 'modal__fieldset-error  task-modal__fieldset'
+                    : 'modal__fieldset  task-modal__fieldset'
+            }>
+            <legend
+                className={
+                    required
+                        ? 'modal__legend-error task-modal__legend'
+                        : 'modal__legend task-modal__legend'
+                }>
                 Имя<span className="require-span">*</span>
             </legend>
             <input

@@ -12,13 +12,19 @@ export interface CategoryType {
     description: string | '';
 }
 
-export const initialState = {
-    currentId: 1,
+interface InitialStateType {
+    currentId: number;
+    categories: Array<CategoryType>;
+    isLoading: boolean;
+}
+
+export const initialState: InitialStateType = {
+    currentId: 0,
     categories: [] as Array<CategoryType>,
     isLoading: false,
 };
 
-export type InitialStateType = typeof initialState;
+// export type InitialStateType = typeof initialState;
 
 const categoryReducer = (state: InitialStateType = initialState, action: any): InitialStateType => {
     switch (action.type) {
@@ -27,7 +33,13 @@ const categoryReducer = (state: InitialStateType = initialState, action: any): I
         }
 
         case SET_CATEGORIES: {
-            return { ...state, categories: action.categories };
+            return {
+                ...state,
+                categories: action.categories,
+                currentId: action.categories.length
+                    ? action.categories[action.categories.length - 1].id
+                    : 0,
+            };
         }
 
         case DELETE_CATEGORY: {

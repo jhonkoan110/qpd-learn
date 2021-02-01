@@ -11,6 +11,7 @@ import {
 } from '../../redux/tasks/actionCreators';
 import IndexedDb from '../../services/IndexedDB';
 import Item from '../Item/Item';
+import Loader from '../Loader/Loader';
 import './Tasks.css';
 
 const Tasks = () => {
@@ -27,7 +28,7 @@ const Tasks = () => {
     };
 
     if (isLoading) {
-        return <div className="tasks">Загрузка...</div>;
+        return <Loader />;
     }
 
     return (

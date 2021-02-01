@@ -33,14 +33,6 @@
     font-weight: 500;
 }
 
-.modal__wrapper {
-    background-color: #dbe2ef;
-    margin: 10% auto;
-    width: 800px;
-    padding: 24px;
-    position: relative;
-}
-
 .close-modal {
     font-weight: 500;
     font-size: 50px;
@@ -68,10 +60,15 @@
 .modal__task-container {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 34px;
+    position: relative;
 }
 
 .modal__task-container .modal__fieldset {
+    width: 100%;
+}
+
+.modal__task-container,
+.modal__fieldset-error {
     width: 100%;
 }
 
@@ -79,14 +76,23 @@
     margin-right: 24px;
 }
 
+.modal__task-container .modal__fs1:last-child {
+    margin-right: 0;
+}
+
 .task-modal__fieldset {
     margin-right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .modal__select {
     width: 100%;
     font-size: 20px;
 
+    background-color: var(--color-background);
+    border: 0;
     outline: 0;
 }
 
@@ -96,21 +102,35 @@
     padding: 0 8px 4px 8px;
 }
 
+.modal__fieldset-error {
+    border: 2px solid var(--color-error);
+    border-radius: 4px;
+    padding: 0 8px 4px 8px;
+}
+
 .modal__fieldset:hover,
 .modal__fieldset:focus {
     border: 2px solid var(--color-hover);
 }
 
-.modal__fs1 {
-    margin-bottom: 34px;
+.ml-24 {
+    margin-left: 24px;
 }
 
 .modal__fs2 {
+    margin-top: 15px;
     margin-bottom: 24px;
 }
 
 .modal__legend {
     color: #3f72af;
+    line-height: 5px;
+    padding: 0 2px;
+    font-size: 18px;
+}
+
+.modal__legend-error {
+    color: var(--color-error);
     line-height: 5px;
     padding: 0 2px;
     font-size: 18px;
@@ -182,4 +202,34 @@
 .modal__close-button:active {
     color: #fff;
     background-color: var(--color-hover);
+}
+
+.task__error-field {
+    color: var(--color-error);
+    font-size: 14px;
+    line-height: 20px;
+    visibility: hidden;
+}
+
+.task__error-field-visible {
+    visibility: visible;
+    padding-left: 6px;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--color-error);
+}
+
+.category__error-field {
+    color: var(--color-error);
+    line-height: 20px;
+    visibility: hidden;
+    font-size: 14px;
+}
+
+.category__error-field-visible {
+    visibility: visible;
+    color: var(--color-error);
+    font-size: 14px;
+    padding-left: 6px;
+    line-height: 20px;
 }

@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-    addCategory,
     addCategoryFetchData,
-    categoriesIncrementId,
-    editCategory,
     editCategoryFetchData,
 } from '../../../redux/categories/actionCreators';
 import { CategoryType } from '../../../redux/categories/reducer';
 import { AppStateType } from '../../../redux/store';
-import IndexedDb from '../../../services/IndexedDB';
 import Buttons from '../Buttons/Buttons';
 import CloseButton from '../Buttons/CloseButton';
 import ModalButton from '../Buttons/ModalButton';
@@ -38,11 +34,13 @@ const CategoryModal: React.FC<IModalProps> = ({
 }) => {
     const [title, setTitle] = useState(editTitle ? editTitle : '');
     const [description, setDescription] = useState(editDescription ? editDescription : '');
+    const [required, setRequired] = useState(false);
+
     const dispatch = useDispatch();
-    const categories = useSelector((state: AppStateType) => state.categoryList.categories);
     const currentId = useSelector((state: AppStateType) => state.categoryList.currentId);
 
     const changeTitleHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setRequired(false);
         setTitle(e.target.value);
     };
 
@@ -52,26 +50,34 @@ const CategoryModal: React.FC<IModalProps> = ({
 
     // Добавление категории по кнопке "создать"
     const addCategoryHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        const newCategory: CategoryType = {
-            id: currentId,
-            title,
-            description,
-        };
+        if (title === '') {
+            setRequired(true);
+        } else {
+            const newCategory: CategoryType = {
+                id: currentId + 1,
+                title,
+                description,
+            };
 
-        dispatch(addCategoryFetchData(newCategory));
-        setTitle('');
-        setDescription('');
+            dispatch(addCategoryFetchData(newCategory));
+            setTitle('');
+            setDescription('');
+        }
     };
 
     // Редактирование категории по кнопке редактирования
     const editCategoryHandler = (id?: number) => {
-        if (id) {
-            const updatedCategory: CategoryType = {
-                id,
-                title,
-                description,
-            };
-            dispatch(editCategoryFetchData(updatedCategory));
+        if (title === '') {
+            setRequired(true);
+        } else {
+            if (id) {
+                const updatedCategory: CategoryType = {
+                    id,
+                    title,
+                    description,
+                };
+                dispatch(editCategoryFetchData(updatedCategory));
+            }
         }
     };
 
@@ -83,10 +89,15 @@ const CategoryModal: React.FC<IModalProps> = ({
 
             <h1 className="modal__heading">{modalHeader}</h1>
             <Title
+                required={required}
                 placeholder="Введите имя категории"
                 onChange={changeTitleHandler}
                 value={title}
             />
+            <p className={required ? 'category__error-field-visible' : 'category__error-field'}>
+                Поле должно быть обязательным
+            </p>
+
             <Description
                 value={description}
                 placeholder="Введите описание категории"

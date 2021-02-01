@@ -7,6 +7,7 @@ import {
 } from '../../redux/categories/actionCreators';
 import { AppStateType } from '../../redux/store';
 import Item from '../Item/Item';
+import Loader from '../Loader/Loader';
 import './Categories.css';
 
 const Categories: React.FC = () => {
@@ -23,7 +24,7 @@ const Categories: React.FC = () => {
     };
 
     if (isLoading) {
-        return <div className="categories">Загрузка...</div>;
+        return <Loader />;
     }
 
     return (
