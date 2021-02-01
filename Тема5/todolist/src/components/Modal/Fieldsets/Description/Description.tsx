@@ -14,7 +14,7 @@ const Description: React.FC<DescriptionProps> = ({ placeholder, value, onChange 
             <textarea
                 className="modal__input modal__textarea"
                 placeholder={placeholder}
-                maxLength={512}
+                maxLength={1536}
                 value={value}
                 onChange={onChange}
             />

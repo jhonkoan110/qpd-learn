@@ -1,5 +1,6 @@
 .dropdown {
     width: 100%;
+    height: 100%;
     position: relative;
 }
 
@@ -15,11 +16,20 @@
 }
 
 .dropdown-select {
+    height: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
 
     cursor: pointer;
+}
+
+.select {
+    color: #000;
+}
+
+.select-placeholder {
+    color: rgba(0, 0, 0, 0.5);
 }
 
 .triangle {
@@ -49,6 +59,7 @@
 
 .dropdown-list__item {
     padding: 5px 10px;
+    line-height: 46px;
 }
 
 .dropdown-list__item:hover {

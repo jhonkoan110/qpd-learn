@@ -34,6 +34,7 @@ const TasksModal: React.FC<IModalProps> = ({
     const [description, setDescription] = useState(editDescription ? editDescription : '');
     const [required, setRequired] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState('');
+    const [categoryId, setCategoryId] = useState(0);
     const dispatch = useDispatch();
     const currentId = useSelector((state: AppStateType) => state.taskList.currentId);
 
@@ -46,13 +47,14 @@ const TasksModal: React.FC<IModalProps> = ({
         setDescription(e.target.value);
     };
 
-    const selectChangeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedCategory(e.target.value);
+    const categoryClickHandler = (categoryId: number, categoryTitle: string) => {
+        setSelectedCategory(categoryTitle);
+        setCategoryId(categoryId);
     };
 
-    const optionChangeHandler = (e: React.ChangeEvent<HTMLOptionElement>) => {
-        const categoryId = e.target.getAttribute('category-id');
-        console.log(categoryId);
+    const clearCategoriesHandler = () => {
+        setSelectedCategory('');
+        setCategoryId(0);
     };
 
     const addTaskHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -64,6 +66,7 @@ const TasksModal: React.FC<IModalProps> = ({
                 id: currentId + 1,
                 title,
                 description,
+                categoryId: categoryId !== 0 ? categoryId : undefined,
             };
             dispatch(addTaskFetchData(newTask));
 
@@ -104,7 +107,8 @@ const TasksModal: React.FC<IModalProps> = ({
 
                 <SelectCategory
                     selectedCategory={selectedCategory}
-                    onChange={selectChangeHandler}
+                    onCategoryClick={categoryClickHandler}
+                    onClearCategoriesClick={clearCategoriesHandler}
                 />
             </div>
             <p className={required ? 'task__error-field-visible' : 'task__error-field'}>

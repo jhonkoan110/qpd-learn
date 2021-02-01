@@ -5,39 +5,42 @@ import './SelectCategory.css';
 
 interface SelectCategoryProps {
     selectedCategory: string;
-    onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+    onCategoryClick: (categoryId: number, categoryTitle: string) => void;
+    onClearCategoriesClick: () => void;
 }
 
-const SelectCategory: React.FC<SelectCategoryProps> = ({ selectedCategory, onChange }) => {
+const SelectCategory: React.FC<SelectCategoryProps> = ({
+    selectedCategory,
+    onCategoryClick,
+    onClearCategoriesClick,
+}) => {
     const categories = useSelector((state: AppStateType) => state.categoryList.categories);
     return (
         <fieldset className="modal__fieldset  task-modal__fieldset ml-24">
             <legend className="modal__legend task-modal__legend">Категория</legend>
-            {/* <select
-                name="categories"
-                id="categories"
-                placeholder="Выберите категорию"
-                className="modal__select"
-                value={selectedCategory}
-                onChange={onChange}>
-                <option value=""></option>
-                {categories.map((item) => {
-                    return (
-                        <option key={item.id} value={item.title} category-id={item.id}>
-                            {item.title}
-                        </option>
-                    );
-                })}
-            </select> */}
+
             <div className="dropdown">
                 <div className="dropdown-select">
-                    <span className="select">Selected item</span>
+                    <div className="select">
+                        {selectedCategory || (
+                            <span className="select-placeholder">Выберите категорию</span>
+                        )}
+                    </div>
                     <div className="triangle"></div>
                 </div>
                 <div className="dropdown-list">
-                    <div className="dropdown-list__item">Выберите категорию</div>
+                    <div className="dropdown-list__item" onClick={onClearCategoriesClick}>
+                        Очистить категорию
+                    </div>
                     {categories.map((item) => {
-                        return <div className="dropdown-list__item">{item.title}</div>;
+                        return (
+                            <div
+                                key={item.id}
+                                className="dropdown-list__item"
+                                onClick={() => onCategoryClick(item.id, item.title)}>
+                                {item.title}
+                            </div>
+                        );
                     })}
                 </div>
             </div>

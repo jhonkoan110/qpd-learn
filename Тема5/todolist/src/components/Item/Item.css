@@ -21,9 +21,10 @@
 
 .item__content p {
     color: #808080;
+    padding-right: 10px;
     font-style: normal;
     font-weight: 400;
-    text-align: left;
+    text-align: justify;
     word-wrap: break-word;
 }
 
@@ -32,9 +33,6 @@
     font-size: 1rem;
     margin-top: 20px;
     align-self: flex-start;
-}
-.fa {
-    font-size: 20px;
 }
 
 .item__edit {
