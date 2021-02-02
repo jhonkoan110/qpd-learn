@@ -75,6 +75,10 @@
     background-color: var(--color-main);
     font-size: 1.3rem;
 
+    position: absolute;
+    right: 1.6rem;
+    top: 32px;
+
     border: 0;
     outline: 0;
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Buttons: React.FC = ({ children }) => {
+const ModalFooter: React.FC = ({ children }) => {
     return <div className="modal__buttons">{children}</div>;
 };
 
-export default Buttons;
+export default ModalFooter;

@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { CategoryType } from '../../redux/categories/reducer';
 import {
     addCategoryFetchData,
+    categoriesFetchData,
     editCategoryFetchData,
-} from '../../../redux/categories/actionCreators';
-import { CategoryType } from '../../../redux/categories/reducer';
-import { AppStateType } from '../../../redux/store';
-import Buttons from '../Buttons/Buttons';
-import CloseButton from '../Buttons/CloseButton';
-import ModalButton from '../Buttons/ModalButton';
-import Description from '../Fieldsets/Description/Description';
-import Title from '../Fieldsets/Title/Title';
-import Modal from '../Modal';
+} from '../../redux/categories/service';
+import { AppStateType } from '../../redux/store';
+import Buttons from '../../components/Buttons/ModalFooter';
+import Modal from '../../components/Modal/Modal';
+import Button from '../../components/Button';
+import Title from '../../components/Fieldsets/Title/Title';
+import Description from '../../components/Fieldsets/Description/Description';
 
 interface IModalProps {
     id?: number;
@@ -32,7 +32,7 @@ const CategoryModal: React.FC<IModalProps> = ({
     modalHeader,
     modalButtonText,
 }) => {
-    const [title, setTitle] = useState(editTitle ? editTitle : '');
+    const [title, setTitle] = useState(editTitle || '');
     const [description, setDescription] = useState(editDescription ? editDescription : '');
     const [required, setRequired] = useState(false);
 
@@ -60,6 +60,7 @@ const CategoryModal: React.FC<IModalProps> = ({
             };
 
             dispatch(addCategoryFetchData(newCategory));
+            dispatch(categoriesFetchData());
             setTitle('');
             setDescription('');
         }
@@ -77,6 +78,7 @@ const CategoryModal: React.FC<IModalProps> = ({
                     description,
                 };
                 dispatch(editCategoryFetchData(updatedCategory));
+                dispatch(categoriesFetchData());
             }
         }
     };
@@ -104,13 +106,16 @@ const CategoryModal: React.FC<IModalProps> = ({
                 onChange={changeDescriptionHandler}
             />
             <Buttons>
-                {isEdit ? (
-                    <ModalButton buttonText="Сохранить" onClick={() => editCategoryHandler(id)} />
-                ) : (
-                    <ModalButton buttonText={modalButtonText} onClick={addCategoryHandler} />
-                )}
-
-                <CloseButton buttonText="Закрыть" closeModal={closeModal} />
+                <Button
+                    buttonText={modalButtonText}
+                    buttonClass="modal__create-button"
+                    onClick={isEdit ? () => editCategoryHandler(id) : addCategoryHandler}
+                />
+                <Button
+                    buttonText="Закрыть"
+                    buttonClass="modal__close-button"
+                    onClick={closeModal}
+                />
             </Buttons>
         </Modal>
     );

@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppStateType } from '../../../redux/store';
-import { addTaskFetchData, editTaskFetchData } from '../../../redux/tasks/actionCreators';
-import { ITask } from '../../../redux/tasks/reducer';
-import Buttons from '../Buttons/Buttons';
-import CloseButton from '../Buttons/CloseButton';
-import ModalButton from '../Buttons/ModalButton';
-import Description from '../Fieldsets/Description/Description';
-import SelectCategory from '../Fieldsets/SelectCategory/SelectCategory';
-import Title from '../Fieldsets/Title/Title';
-import Modal from '../Modal';
+import { AppStateType } from '../../redux/store';
+import { ITask } from '../../redux/tasks/reducer';
+import { addTaskFetchData, editTaskFetchData, tasksFetchData } from '../../redux/tasks/service';
+import Buttons from '../../components/Buttons/ModalFooter';
+import SelectCategory from '../../Categories/SelectCategory/SelectCategory';
+import Modal from '../../components/Modal/Modal';
+import Button from '../../components/Button';
+import Title from '../../components/Fieldsets/Title/Title';
+import Description from '../../components/Fieldsets/Description/Description';
 
 interface IModalProps {
     id?: number;
@@ -69,6 +68,7 @@ const TasksModal: React.FC<IModalProps> = ({
                 categoryId: categoryId !== 0 ? categoryId : undefined,
             };
             dispatch(addTaskFetchData(newTask));
+            dispatch(tasksFetchData());
 
             setTitle('');
             setDescription('');
@@ -84,8 +84,10 @@ const TasksModal: React.FC<IModalProps> = ({
                     id,
                     title,
                     description,
+                    categoryId: categoryId !== 0 ? categoryId : undefined,
                 };
                 dispatch(editTaskFetchData(updatedTask));
+                dispatch(tasksFetchData());
             }
         }
     };
@@ -121,12 +123,16 @@ const TasksModal: React.FC<IModalProps> = ({
                 onChange={changeDescriptionHandler}
             />
             <Buttons>
-                {isEdit ? (
-                    <ModalButton buttonText="Сохранить" onClick={() => editTaskHandler(id)} />
-                ) : (
-                    <ModalButton buttonText={modalButtonText} onClick={addTaskHandler} />
-                )}
-                <CloseButton buttonText="Закрыть" closeModal={closeModal} />
+                <Button
+                    buttonText={modalButtonText}
+                    buttonClass="modal__create-button"
+                    onClick={isEdit ? () => editTaskHandler(id) : addTaskHandler}
+                />
+                <Button
+                    buttonText="Закрыть"
+                    buttonClass="modal__close-button"
+                    onClick={closeModal}
+                />
             </Buttons>
         </Modal>
     );

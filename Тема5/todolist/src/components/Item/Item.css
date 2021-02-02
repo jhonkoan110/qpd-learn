@@ -14,9 +14,28 @@
 }
 
 .item__content h4 {
+    display: flex;
+    align-items: center;
     margin-bottom: 1rem;
     font-style: normal;
     font-weight: 500;
+}
+
+.item__content__category {
+    margin-left: 1rem;
+    display: flex;
+}
+
+.item__content__category img {
+    transform: translateY(-1px);
+    margin-right: 4px;
+}
+
+.item__content__category-title {
+    color: var(--color-main);
+    font-weight: 400;
+    font-style: normal;
+    font-size: 18px;
 }
 
 .item__content p {

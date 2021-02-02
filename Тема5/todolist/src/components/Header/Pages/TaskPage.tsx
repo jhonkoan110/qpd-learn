@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import TasksModal from '../../Modal/TasksModal/TasksModal';
+import Tasks from '../../../Tasks/Tasks';
+import TasksModal from '../../../Tasks/TasksModal/TasksModal';
 
 const TaskPage = () => {
     const [activeModal, setActiveModal] = useState(false);
@@ -17,6 +18,7 @@ const TaskPage = () => {
             <button className="header__add-item" onClick={openModalClickHadnler}>
                 Добавить задачу
             </button>
+            <Tasks />
             {activeModal && (
                 <TasksModal
                     closeModal={closeModalClickHandler}

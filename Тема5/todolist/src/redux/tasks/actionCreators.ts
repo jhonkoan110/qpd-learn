@@ -2,13 +2,15 @@ import { ITask } from './reducer';
 import {
     ADD_TASK,
     DeleteTaskActionType,
+    DELETE_CATEGORY_ID,
     DELETE_TASK,
     EDIT_TASK,
+    SET_CATEGORIES_INTO_TASKS,
     SET_TASKS,
     TASKS_INCREMENT_ID,
     TASKS_IS_LOADING,
 } from './actionTypes';
-import IndexedDb from '../../services/IndexedDB';
+import { CategoryType } from '../categories/reducer';
 
 export const tasksIsLoading = (isLoading: boolean) => ({
     type: TASKS_IS_LOADING,
@@ -18,6 +20,11 @@ export const tasksIsLoading = (isLoading: boolean) => ({
 export const setTasks = (tasks: Array<ITask>) => ({
     type: SET_TASKS,
     tasks,
+});
+
+export const setCategoriesIntoTasks = (categories: Array<CategoryType>) => ({
+    type: SET_CATEGORIES_INTO_TASKS,
+    categories,
 });
 
 export const deleteTask = (id: number): DeleteTaskActionType => ({
@@ -37,51 +44,4 @@ export const editTask = (updatedTask: ITask) => ({
     updatedTask,
 });
 
-// Загрузка всех задач из базы данных в редакс
-export const tasksFetchData = () => (dispatch: any) => {
-    dispatch(tasksIsLoading(true));
-
-    const runIndexedDb = async () => {
-        const indexedDb = new IndexedDb('todolist');
-        await indexedDb.createObjectStore(['tasks', 'categories']);
-        await indexedDb
-            .getAllValue('tasks')
-            .then((tasks) => dispatch(setTasks(tasks)))
-            .then(dispatch(tasksIsLoading(false)));
-    };
-    runIndexedDb();
-};
-
-// Добавление новой задачи в редакс и в базу данных
-export const addTaskFetchData = (newTask: ITask) => (dispatch: any) => {
-    dispatch(tasksIncrementId());
-    const runIndexedDb = async () => {
-        const indexedDb = new IndexedDb('todolist');
-        await indexedDb.createObjectStore(['tasks', 'categories']);
-        await indexedDb.putValue('tasks', newTask);
-    };
-    runIndexedDb();
-    dispatch(addTask(newTask));
-};
-
-// Удаление задачи по ID из базы данных и из редакса
-export const deleteTaskFetchData = (id: number) => (dispatch: any) => {
-    const runIndexedDb = async () => {
-        const indexedDb = new IndexedDb('todolist');
-        await indexedDb.createObjectStore(['tasks', 'categories']);
-        await indexedDb.deleteValue('tasks', id);
-    };
-    runIndexedDb();
-    dispatch(deleteTask(id));
-};
-
-// Редактирование задачи в базе данных и в редаксе
-export const editTaskFetchData = (newTask: ITask) => (dispatch: any) => {
-    const runIndexedDb = async () => {
-        const indexedDb = new IndexedDb('todolist');
-        await indexedDb.createObjectStore(['tasks', 'categories']);
-        await indexedDb.putValue('tasks', newTask);
-    };
-    runIndexedDb();
-    dispatch(editTask(newTask));
-};
+export const deleteCategoryId = (id: number) => ({ type: DELETE_CATEGORY_ID, id });

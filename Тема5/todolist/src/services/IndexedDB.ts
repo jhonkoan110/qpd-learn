@@ -41,6 +41,16 @@ class IndexedDb {
         return result;
     }
 
+    public async putBulkValue(tableName: string, values: object[]) {
+        const tx = this.db.transaction(tableName, 'readwrite');
+        const store = tx.objectStore(tableName);
+        for (const value of values) {
+            const result = await store.put(value);
+            console.log('Put Bulk Data ', JSON.stringify(result));
+        }
+        return this.getAllValue(tableName);
+    }
+
     public async updateValue(tableName: string, id: number, value: object) {
         const tx = this.db.transaction(tableName, 'readwrite');
         const store = tx.objectStore(tableName);

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import CategoryModal from '../../Modal/CategoryModal/CategoryModal';
+import Categories from '../../../Categories/Categories';
+import CategoryModal from '../../../Categories/CategoryModal/CategoryModal';
 
 const CategoryPage = () => {
     const [activeModal, setActiveModal] = useState(false);
@@ -17,6 +18,7 @@ const CategoryPage = () => {
             <button className="header__add-item" onClick={openModalClickHadnler}>
                 Добавить категорию
             </button>
+            <Categories />
             {activeModal && (
                 <CategoryModal
                     closeModal={closeModalClickHandler}

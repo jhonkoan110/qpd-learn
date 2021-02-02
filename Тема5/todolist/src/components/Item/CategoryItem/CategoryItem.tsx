@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
-import './Item.css';
-import editIcon from '../../assets/edit.png';
-import deleteIcon from '../../assets/delete.png';
-import DeleteModal from '../Modal/DeleteModal/DeleteModal';
-import CategoryModal from '../Modal/CategoryModal/CategoryModal';
-import TasksModal from '../Modal/TasksModal/TasksModal';
+import { useState } from 'react';
+import CategoryModal from '../../../Categories/CategoryModal/CategoryModal';
+import '../Item.css';
+import editIcon from '../../../assets/edit.png';
+import deleteIcon from '../../../assets/delete.png';
+import DeleteModal from '../../Modal/DeleteModal/DeleteModal';
 
 interface IProps {
     deleteModalText: string;
-    isCategory?: boolean;
     isTask?: boolean;
     id: number;
     title: string;
@@ -19,7 +17,6 @@ interface IProps {
 const CategoryItem: React.FC<IProps> = ({
     deleteModalText,
     isTask,
-    isCategory,
     id,
     title,
     description,
@@ -58,25 +55,14 @@ const CategoryItem: React.FC<IProps> = ({
                     <button className="item__button" onClick={openEditModalHandler}>
                         <img src={editIcon} alt="edit icon" />
                     </button>
-                    {activeEditModal && isCategory && (
+                    {activeEditModal && (
                         <CategoryModal
                             id={id}
                             isEdit={isEdit}
                             editTitle={title}
                             editDescription={description}
                             modalHeader="Редактирование категории"
-                            modalButtonText="Сохранить"
-                            closeModal={closeEditOpenHandler}
-                        />
-                    )}
-                    {activeEditModal && isTask && (
-                        <TasksModal
-                            id={id}
-                            isEdit={isEdit}
-                            editTitle={title}
-                            editDescription={description}
-                            modalHeader="Редактирование задачи"
-                            modalButtonText="Сохранить"
+                            modalButtonText={isEdit ? 'Сохранить' : 'Создать'}
                             closeModal={closeEditOpenHandler}
                         />
                     )}
@@ -88,6 +74,7 @@ const CategoryItem: React.FC<IProps> = ({
                     {activeDeleteModal && (
                         <DeleteModal
                             id={id}
+                            isTask={isTask}
                             title={title}
                             deleteModalText={deleteModalText}
                             onAcceptClick={deleteItem}

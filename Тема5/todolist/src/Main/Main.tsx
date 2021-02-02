@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Categories from '../Categories/Categories';
-import Tasks from '../Tasks/Tasks';
+import CategoryPage from '../components/Header/Pages/CategoryPage';
+import TaskPage from '../components/Header/Pages/TaskPage';
 import './Main.css';
 
 const Main = () => {
@@ -9,10 +9,10 @@ const Main = () => {
         <main className="main">
             <Switch>
                 <Route path="/tasks">
-                    <Tasks />
+                    <TaskPage />
                 </Route>
                 <Route path="/categories">
-                    <Categories />
+                    <CategoryPage />
                 </Route>
             </Switch>
         </main>

@@ -1,11 +1,11 @@
 import React from 'react';
-import Buttons from '../Buttons/Buttons';
-import CloseButton from '../Buttons/CloseButton';
-import ModalButton from '../Buttons/ModalButton';
+import Buttons from '../../Buttons/ModalFooter';
 import Modal from '../Modal';
+import Button from '../../Button';
 
 interface DeleteModalProps {
     deleteModalText: string;
+    isTask: boolean | undefined;
     id: number;
     title: string;
     onAcceptClick: (id: number) => void;
@@ -14,6 +14,7 @@ interface DeleteModalProps {
 
 const DeleteModal: React.FC<DeleteModalProps> = ({
     deleteModalText,
+    isTask,
     id,
     title,
     onAcceptClick,
@@ -24,13 +25,21 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
             <button className="close-modal" onClick={onCancelClick}>
                 ×
             </button>
-            <h1 className="modal__heading">'Удаление категории'</h1>
-            <p className="modal__fs1">
-                Вы действительно хотите удалить {deleteModalText} {title}?
+            <h1 className="modal__heading">Удаление {isTask ? 'задачи' : 'категории'}</h1>
+            <p className="delete-modal__text">
+                Вы действительно хотите удалить {deleteModalText} "{title}"?
             </p>
             <Buttons>
-                <ModalButton buttonText="Да" onClick={() => onAcceptClick(id)} />
-                <CloseButton buttonText="Нет" closeModal={onCancelClick} />
+                <Button
+                    buttonText="Да"
+                    buttonClass="modal__create-button"
+                    onClick={() => onAcceptClick(id)}
+                />
+                <Button
+                    buttonText="Нет"
+                    buttonClass="modal__close-button"
+                    onClick={onCancelClick}
+                />
             </Buttons>
         </Modal>
     );

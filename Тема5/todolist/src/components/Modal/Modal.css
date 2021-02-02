@@ -159,6 +159,7 @@
 .modal__buttons {
     display: flex;
     justify-content: flex-end;
+    margin-top: 24px;
 }
 
 .modal__create-button {
@@ -207,6 +208,10 @@
 .modal__close-button:active {
     color: #fff;
     background-color: var(--color-hover);
+}
+
+.delete-modal__text {
+    font-size: 20px;
 }
 
 .task__error-field {

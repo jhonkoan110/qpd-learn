@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { AppStateType } from '../../../../redux/store';
+import { AppStateType } from '../../redux/store';
 import './SelectCategory.css';
 
 interface SelectCategoryProps {

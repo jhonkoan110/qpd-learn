@@ -24,14 +24,14 @@ const Header: React.FC = () => {
                     </div>
                 </nav>
                 <div className="header__nav-add-task">
-                    <Switch>
+                    {/* <Switch>
                         <Route path="/tasks">
                             <TaskPage />
                         </Route>
                         <Route path="/categories">
                             <CategoryPage />
                         </Route>
-                    </Switch>
+                    </Switch> */}
                 </div>
             </div>
         </header>

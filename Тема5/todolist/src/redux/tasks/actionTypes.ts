@@ -7,11 +7,12 @@ export const ADD_TASK: string = 'ADD_TASK';
 export const TASKS_INCREMENT_ID = 'TASKS_INCREMENT_ID';
 export const EDIT_TASK: string = 'EDIT_TASK';
 export const SET_CATEGORIES_INTO_TASKS = 'SET_CATEGORIES_INTO_TASKS';
+export const DELETE_CATEGORY_ID = 'DELETE_CATEGORY_ID';
 
-// export interface ISetCategoriesIntoTasks {
-//     type: typeof SET_CATEGORIES_INTO_TASKS;
-//     payload: Array<CategoryType>;
-// }
+export interface ISetCategoriesIntoTasks {
+    type: typeof SET_CATEGORIES_INTO_TASKS;
+    payload: Array<CategoryType>;
+}
 
 export interface ITasksIsLoading {
     type: typeof TASKS_IS_LOADING;
@@ -41,3 +42,8 @@ export type DeleteTaskActionType = {
     type: typeof DELETE_TASK;
     id: number;
 };
+
+export interface IDeleteCategoryId {
+    type: typeof DELETE_CATEGORY_ID;
+    id: number;
+}
