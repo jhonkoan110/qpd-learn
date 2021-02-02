@@ -20,22 +20,6 @@ function Calculator(startVal) {
     // Массив операций
     this.operations = ['+', '-', '*', '/'];
 
-    // Проверка входящего значение на число и NaN
-    // Возвращает false, если val не число, либо если val = NaN
-    function checkVal(val) {
-        if (typeof val !== 'number' || (typeof val === 'number' && isNaN(val))) {
-            return false;
-        }
-        return true;
-    }
-
-    // Конструктор пользовательской ошибки, принимает в себя строку
-    // с сообщением ошибки
-    function UserException(message) {
-        this.message = message;
-        this.name = 'Исключение, определённое пользователем';
-    }
-
     // Проводит проверку на нечисловое значение
     // Добавляет в главный массив(this.state) знак операции и число
     // Знак операции берёт из массива знаков операций
@@ -155,6 +139,22 @@ function Calculator(startVal) {
         }
         return this.state[0];
     };
+}
+
+// Проверка входящего значение на число и NaN
+// Возвращает false, если val не число, либо если val = NaN
+function checkVal(val) {
+    if (typeof val !== 'number' || (typeof val === 'number' && isNaN(val))) {
+        return false;
+    }
+    return true;
+}
+
+// Конструктор пользовательской ошибки, принимает в себя строку
+// с сообщением ошибки
+function UserException(message) {
+    this.message = message;
+    this.name = 'Исключение, определённое пользователем';
 }
 
 const calc = new Calculator(1);
