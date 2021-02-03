@@ -5,52 +5,45 @@ async function all(iterable) {
         console.log('Нужен итерируемый объект');
     } else {
         // Создаётся промис
-        const resultPromise = new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             // Создаётся результирующий массив
             const result = [];
+
             // Если объект пустой, то в резульат промиса отправляется пустой массив
             if (iterable.length == 0) {
                 resolve(result);
             }
-
-            iterable.forEach((promise, i) => {
+            let count = 0;
+            iterable.forEach(async (promise, i) => {
                 // Если текущий элемент является промисом
                 if (Object.getPrototypeOf(promise) === Promise.prototype) {
                     // Успех промиса отправляется в результирующий массив с таким же индексом
                     // В случае ошибки обрабатывается ошибка
-                    promise
-                        .then((res) => {
-                            result[i] = res;
-                        })
-                        .catch((err) => {
-                            reject(err);
-                        });
+                    try {
+                        const response = await promise;
+                        result[i] = response;
+                    } catch (error) {
+                        count = count + 1;
+                        reject(error);
+                    } finally {
+                        if (count > 0) reject();
+                    }
                 } else {
-                    // Если элемент не промис, просто записывается в результирующий массив
                     result[i] = promise;
                 }
             });
-
-            // await executeAllPromises(iterable);
-
-            // // Таймаут гарантирует, что сначала выполнится код выше
-            // setTimeout(() => {
-            //     resolve(result);
-            // }, 0);
+            setTimeout(() => {
+                resolve(result);
+            }, 0);
         });
-
-        // Возвращается промис
-        return resultPromise;
     }
 }
 
 const promises = [
     new Promise((resolve, reject) => setTimeout(() => resolve(1), 3000)),
-    // new Promise((resolve, reject) => reject(new Error('error'))),
+    // new Promise((resolve, reject) => reject(new Error('Моя ошибка'))),
     new Promise((resolve, reject) => setTimeout(() => resolve(3), 1000)),
-    4,
-    'aasd',
 ];
 
 const res = all(promises);
-console.log(res); // Uncaught (in promise) Error: error
+console.log(res);

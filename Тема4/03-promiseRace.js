@@ -41,4 +41,4 @@ const promises2 = [
 ];
 
 const res2 = race(promises2);
-console.log(res2);
+// console.log(res2);
