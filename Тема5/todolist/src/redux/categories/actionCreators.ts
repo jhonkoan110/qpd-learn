@@ -10,7 +10,7 @@ import {
     IEditCategory,
     SET_CATEGORIES,
 } from './actionTypes';
-import IndexedDb from '../../services/IndexedDB';
+import IndexedDb from '../../service/IndexedDB';
 
 export const categoryIsLoading = (isLoading: boolean) => ({
     type: CATEGORIES_IS_LOADING,

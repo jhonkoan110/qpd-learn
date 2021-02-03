@@ -1,8 +1,6 @@
 import React from 'react';
-import { NavLink, Route, Switch } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import './Header.css';
-import CategoryPage from './Pages/CategoryPage';
-import TaskPage from './Pages/TaskPage';
 
 const Header: React.FC = () => {
     return (
@@ -23,16 +21,6 @@ const Header: React.FC = () => {
                         </div>
                     </div>
                 </nav>
-                <div className="header__nav-add-task">
-                    {/* <Switch>
-                        <Route path="/tasks">
-                            <TaskPage />
-                        </Route>
-                        <Route path="/categories">
-                            <CategoryPage />
-                        </Route>
-                    </Switch> */}
-                </div>
             </div>
         </header>
     );

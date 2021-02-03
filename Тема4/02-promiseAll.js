@@ -1,5 +1,5 @@
 // Аналог метода Promise.all()
-function all(iterable) {
+async function all(iterable) {
     // Проверяет аргумент, является ли он итерируемым (массив, объект, строка и тд)
     if (typeof iterable[Symbol.iterator] !== 'function') {
         console.log('Нужен итерируемый объект');
@@ -31,10 +31,12 @@ function all(iterable) {
                 }
             });
 
-            // Таймаут гарантирует, что сначала выполнится код выше
-            setTimeout(() => {
-                resolve(result);
-            }, 0);
+            // await executeAllPromises(iterable);
+
+            // // Таймаут гарантирует, что сначала выполнится код выше
+            // setTimeout(() => {
+            //     resolve(result);
+            // }, 0);
         });
 
         // Возвращается промис
@@ -44,7 +46,7 @@ function all(iterable) {
 
 const promises = [
     new Promise((resolve, reject) => setTimeout(() => resolve(1), 3000)),
-    new Promise((resolve, reject) => reject(new Error('error'))),
+    // new Promise((resolve, reject) => reject(new Error('error'))),
     new Promise((resolve, reject) => setTimeout(() => resolve(3), 1000)),
     4,
     'aasd',

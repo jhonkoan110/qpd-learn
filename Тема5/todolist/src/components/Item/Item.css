@@ -8,6 +8,10 @@
     border-bottom: 2px solid var(--color-main);
 }
 
+.item:hover {
+    background: rgba(37, 127, 234, 0.2);
+}
+
 .item__content {
     font-size: 1.2rem;
     width: 96%;
@@ -61,7 +65,7 @@
 .item__button {
     border: 0;
     outline: 0;
-    background-color: var(--color-background);
+    background: none;
 }
 
 .item__button:hover {

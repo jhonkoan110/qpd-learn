@@ -1,4 +1,4 @@
-import IndexedDb from '../../services/IndexedDB';
+import IndexedDb from './IndexedDB';
 import {
     addCategory,
     categoriesIncrementId,
@@ -6,8 +6,8 @@ import {
     deleteCategory,
     editCategory,
     setCategories,
-} from './actionCreators';
-import { CategoryType } from './reducer';
+} from '../redux/categories/actionCreators';
+import { CategoryType } from '../redux/categories/reducer';
 
 // Загрузка всех категорий из базы данных в редакс
 export const categoriesFetchData = () => (dispatch: any) => {

@@ -6,7 +6,6 @@ import {
     SET_TASKS,
     TASKS_IS_LOADING,
     TASKS_INCREMENT_ID,
-    SET_CATEGORIES_INTO_TASKS,
     DELETE_CATEGORY_ID,
 } from './actionTypes';
 
@@ -39,24 +38,6 @@ const tasksReducer = (state: InitialStateType = initialState, action: any): Init
                 ...state,
                 tasks: action.tasks,
                 currentId: action.tasks.length ? action.tasks[action.tasks.length - 1].id : 0,
-            };
-        }
-
-        case SET_CATEGORIES_INTO_TASKS: {
-            const tasksWithCategories: Array<ITask> = state.tasks.map((task) => {
-                for (let i = 0; i < action.categories.length; i++) {
-                    const categoryId: number = action.categories[i].id;
-                    const categoryTitle: string = action.categories[i].title;
-
-                    if (task.categoryId === categoryId) {
-                        task = { ...task, categoryTitle: categoryTitle };
-                    }
-                }
-                return task;
-            });
-            return {
-                ...state,
-                tasks: tasksWithCategories,
             };
         }
 

@@ -5,12 +5,10 @@ import {
     DELETE_CATEGORY_ID,
     DELETE_TASK,
     EDIT_TASK,
-    SET_CATEGORIES_INTO_TASKS,
     SET_TASKS,
     TASKS_INCREMENT_ID,
     TASKS_IS_LOADING,
 } from './actionTypes';
-import { CategoryType } from '../categories/reducer';
 
 export const tasksIsLoading = (isLoading: boolean) => ({
     type: TASKS_IS_LOADING,
@@ -20,11 +18,6 @@ export const tasksIsLoading = (isLoading: boolean) => ({
 export const setTasks = (tasks: Array<ITask>) => ({
     type: SET_TASKS,
     tasks,
-});
-
-export const setCategoriesIntoTasks = (categories: Array<CategoryType>) => ({
-    type: SET_CATEGORIES_INTO_TASKS,
-    categories,
 });
 
 export const deleteTask = (id: number): DeleteTaskActionType => ({

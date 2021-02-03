@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppStateType } from '../../redux/store';
 import { ITask } from '../../redux/tasks/reducer';
-import { addTaskFetchData, editTaskFetchData, tasksFetchData } from '../../redux/tasks/service';
+import { addTaskFetchData, editTaskFetchData, tasksFetchData } from '../../service/tasks';
 import Buttons from '../../components/Buttons/ModalFooter';
 import SelectCategory from '../../Categories/SelectCategory/SelectCategory';
 import Modal from '../../components/Modal/Modal';
@@ -29,33 +29,38 @@ const TasksModal: React.FC<IModalProps> = ({
     modalHeader,
     modalButtonText,
 }) => {
-    const [title, setTitle] = useState(editTitle ? editTitle : '');
-    const [description, setDescription] = useState(editDescription ? editDescription : '');
+    const [title, setTitle] = useState(editTitle || '');
+    const [description, setDescription] = useState(editDescription || '');
     const [required, setRequired] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState('');
     const [categoryId, setCategoryId] = useState(0);
     const dispatch = useDispatch();
     const currentId = useSelector((state: AppStateType) => state.taskList.currentId);
 
+    // Обработчик инпута title
     const titleChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setRequired(false);
         setTitle(e.target.value);
     };
 
+    // Обработчик инпута description
     const changeDescriptionHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setDescription(e.target.value);
     };
 
+    // Выбрать категорию в селекторе
     const categoryClickHandler = (categoryId: number, categoryTitle: string) => {
         setSelectedCategory(categoryTitle);
         setCategoryId(categoryId);
     };
 
+    // Очистить категорию в селекторе
     const clearCategoriesHandler = () => {
         setSelectedCategory('');
         setCategoryId(0);
     };
 
+    // Добавить новую задачу, загрузить в БД и обновить UI
     const addTaskHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         if (title === '') {
             setRequired(true);
@@ -75,6 +80,7 @@ const TasksModal: React.FC<IModalProps> = ({
         }
     };
 
+    // Редактировать задачу по ID, обновить в БД и обновить UI
     const editTaskHandler = (id?: number) => {
         if (title === '') {
             setRequired(true);

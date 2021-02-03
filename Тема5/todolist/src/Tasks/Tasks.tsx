@@ -1,27 +1,28 @@
-import React, { useEffect } from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppStateType } from '../redux/store';
 import Loader from '../components/Loader/Loader';
 import './Tasks.css';
-import { deleteTaskFetchData, tasksFetchData } from '../redux/tasks/service';
+import { tasksFetchData } from '../service/tasks';
 import { ITask } from '../redux/tasks/reducer';
 import TaskItem from '../components/Item/TaskItem/TaskItem';
 
-const Tasks = () => {
+interface TasksProps {
+    setId: Dispatch<SetStateAction<number>>;
+    openModal: (id?: number, title?: string, description?: string) => void;
+    openDeleteModalHandler: (id: number, title: string, description: string) => void;
+}
+
+const Tasks: React.FC<TasksProps> = ({ setId, openModal, openDeleteModalHandler }) => {
     const tasks = useSelector((state: AppStateType) => state.taskList.tasks);
     const isLoading = useSelector((state: AppStateType) => state.taskList.isLoading);
-    // const categories = useSelector((state: AppStateType) => state.categoryList.categories);
     const dispatch = useDispatch();
 
+    // Загрузить задачи
     useEffect(() => {
         dispatch(tasksFetchData());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    const deleteItemHandler = (id: number) => {
-        dispatch(deleteTaskFetchData(id));
-        dispatch(tasksFetchData());
-    };
 
     if (isLoading) {
         return <Loader />;
@@ -33,14 +34,13 @@ const Tasks = () => {
                 return (
                     task && (
                         <TaskItem
-                            isTask={true}
                             categoryTitle={task.categoryTitle}
                             key={task.id}
                             id={task.id}
                             title={task.title}
                             description={task.description}
-                            deleteModalText="задачу"
-                            deleteItem={deleteItemHandler}
+                            openModal={openModal}
+                            openDeleteModal={openDeleteModalHandler}
                         />
                     )
                 );

@@ -5,7 +5,7 @@ import {
     addCategoryFetchData,
     categoriesFetchData,
     editCategoryFetchData,
-} from '../../redux/categories/service';
+} from '../../service/categories';
 import { AppStateType } from '../../redux/store';
 import Buttons from '../../components/Buttons/ModalFooter';
 import Modal from '../../components/Modal/Modal';
@@ -39,16 +39,18 @@ const CategoryModal: React.FC<IModalProps> = ({
     const dispatch = useDispatch();
     const currentId = useSelector((state: AppStateType) => state.categoryList.currentId);
 
+    // Обработчика инпута title
     const changeTitleHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setRequired(false);
         setTitle(e.target.value);
     };
 
+    // Обработчик инпута description
     const changeDescriptionHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setDescription(e.target.value);
     };
 
-    // Добавление категории по кнопке "создать"
+    // Добавить новую категорию, загрузить в БД и обновить UI
     const addCategoryHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         if (title === '') {
             setRequired(true);
@@ -66,7 +68,7 @@ const CategoryModal: React.FC<IModalProps> = ({
         }
     };
 
-    // Редактирование категории по кнопке редактирования
+    // Редактировать категорию по ID, обновить в БД и обновить UI
     const editCategoryHandler = (id?: number) => {
         if (title === '') {
             setRequired(true);

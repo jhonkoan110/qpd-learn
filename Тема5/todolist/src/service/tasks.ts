@@ -1,15 +1,14 @@
-import IndexedDb from '../../services/IndexedDB';
-import { setCategories } from '../categories/actionCreators';
+import IndexedDb from './IndexedDB';
+import { setCategories } from '../redux/categories/actionCreators';
 import {
     addTask,
     deleteTask,
     editTask,
-    setCategoriesIntoTasks,
     setTasks,
     tasksIncrementId,
     tasksIsLoading,
-} from './actionCreators';
-import { ITask } from './reducer';
+} from '../redux/tasks/actionCreators';
+import { ITask } from '../redux/tasks/reducer';
 
 // Загрузка всех задач из базы данных в редакс
 export const tasksFetchData = () => (dispatch: any) => {
@@ -21,9 +20,21 @@ export const tasksFetchData = () => (dispatch: any) => {
         const tasks = await indexedDb.getAllValue('tasks');
         const categories = await indexedDb.getAllValue('categories');
 
-        dispatch(setTasks(tasks));
+        // Добавление задачам категорий
+        const tasksWithCategories = tasks.map((task: ITask) => {
+            for (let i = 0; i < categories.length; i++) {
+                const categoryId: number = categories[i].id;
+                const categoryTitle: string = categories[i].title;
+
+                if (task.categoryId === categoryId) {
+                    task = { ...task, categoryTitle };
+                }
+            }
+            return task;
+        });
+
+        dispatch(setTasks(tasksWithCategories));
         dispatch(setCategories(categories));
-        dispatch(setCategoriesIntoTasks(categories));
         dispatch(tasksIsLoading(false));
     };
     runIndexedDb();
