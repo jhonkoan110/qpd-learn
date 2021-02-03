@@ -1,16 +1,17 @@
 import '../Item.css';
 import editIcon from '../../../assets/edit.png';
 import deleteIcon from '../../../assets/delete.png';
+import { CategoryType } from '../../../redux/categories/reducer';
 
 interface IProps {
-    id: number;
-    title: string;
-    description: string;
+    category: CategoryType;
     openModal: (id?: number, title?: string, description?: string) => void;
     openDeleteModal: (id: number, title: string, description: string) => void;
 }
 
-const CategoryItem: React.FC<IProps> = ({ id, title, description, openModal, openDeleteModal }) => {
+const CategoryItem: React.FC<IProps> = ({ category, openModal, openDeleteModal }) => {
+    const { id, title, description } = category;
+
     return (
         <div className="item">
             <div className="item__content block">

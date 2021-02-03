@@ -3,24 +3,17 @@ import editIcon from '../../../assets/edit.png';
 import deleteIcon from '../../../assets/delete.png';
 import folderIcon from '../../../assets/folder.png';
 import '../Item.css';
+import { ITask } from '../../../redux/tasks/reducer';
 
 interface TaskItemProps {
-    categoryTitle?: string;
-    id: number;
-    title: string;
-    description: string;
+    task: ITask;
     openModal: (id?: number, title?: string, description?: string) => void;
     openDeleteModal: (id: number, title: string, description: string) => void;
 }
 
-const TaskItem: React.FC<TaskItemProps> = ({
-    categoryTitle,
-    id,
-    title,
-    description,
-    openModal,
-    openDeleteModal,
-}) => {
+const TaskItem: React.FC<TaskItemProps> = ({ task, openModal, openDeleteModal }) => {
+    const { id, title, categoryTitle, description } = task;
+
     return (
         <div className="item">
             <div className="item__content block">

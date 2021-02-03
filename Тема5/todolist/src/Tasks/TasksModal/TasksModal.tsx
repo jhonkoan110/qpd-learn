@@ -14,6 +14,7 @@ interface IModalProps {
     id?: number;
     isEdit?: boolean;
     editTitle?: string;
+    // currentTask?: ITask;
     editDescription?: string;
     modalHeader: string;
     modalButtonText: string;
@@ -24,11 +25,15 @@ const TasksModal: React.FC<IModalProps> = ({
     id,
     isEdit,
     editTitle,
+    // currentTask,
     editDescription,
     closeModal,
     modalHeader,
     modalButtonText,
 }) => {
+    // const id: number | undefined = currentTask?.id;
+    // const editTitle: string | undefined = currentTask?.title;
+    // const editDescription: string | undefined = currentTask?.description;
     const [title, setTitle] = useState(editTitle || '');
     const [description, setDescription] = useState(editDescription || '');
     const [required, setRequired] = useState(false);

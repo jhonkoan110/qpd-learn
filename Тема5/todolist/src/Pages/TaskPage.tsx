@@ -6,30 +6,33 @@ import Tasks from '../Tasks/Tasks';
 import TasksModal from '../Tasks/TasksModal/TasksModal';
 
 const TaskPage: React.FC = () => {
-    const [activeModal, setActiveModal] = useState(false);
-    const [activeDeleteModal, setActiveDeleteModal] = useState(false);
-    const [modalHeader, setModalHeader] = useState('Добавить задачу');
+    const [isActiveModal, setIsActiveModal] = useState(false);
+    const [isActiveDeleteModal, setIsActiveDeleteModal] = useState(false);
+    const [currentTask, setCurrentTask] = useState({
+        id: 0,
+        title: '',
+        description: '',
+    });
     const [id, setId] = useState(0);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [isEdit, setIsEdit] = useState(false);
     const dispatch = useDispatch();
-    const isTask: boolean = true;
-    const deleteModalText: string = 'задачу';
 
     // Открыть модальное окно(добавление/редактирование)
     const openModalClickHadnler = (id?: number, title?: string, description?: string) => {
         if (id && title) {
+            // setCurrentTask({ ...currentTask, id, title });
             setId(id);
             setTitle(title);
             if (description) {
+                // setCurrentTask({ ...currentTask, description });
                 setDescription(description);
             }
-            setModalHeader('Редактирование задачи');
             setIsEdit(true);
         }
 
-        setActiveModal(true);
+        setIsActiveModal(true);
     };
 
     // Обнулить id, title, description
@@ -42,23 +45,25 @@ const TaskPage: React.FC = () => {
     // Закрыть модальное окно(добавление/редактирование)
     const closeModalClickHandler = () => {
         unsetProperties();
+        // setCurrentTask({ id: 0, title: '', description: '' });
         setIsEdit(false);
-        setModalHeader('Добавить задачу');
-        setActiveModal(false);
+        setIsActiveModal(false);
     };
 
     // Открыть модальное окно(удаление)
     const openDeleteModalHandler = (id: number, title: string, description: string) => {
+        // setCurrentTask({ id, title, description });
         setId(id);
         setTitle(title);
         setDescription(description);
-        setActiveDeleteModal(true);
+        setIsActiveDeleteModal(true);
     };
 
     // Закрыть модальное окно(удаление)
     const closeDeleteModalHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        // setCurrentTask({ id: 0, title: '', description: '' });
         unsetProperties();
-        setActiveDeleteModal(false);
+        setIsActiveDeleteModal(false);
     };
 
     // Удалить задачу по id, обновить UI
@@ -75,25 +80,25 @@ const TaskPage: React.FC = () => {
             <Tasks
                 openModal={openModalClickHadnler}
                 openDeleteModalHandler={openDeleteModalHandler}
-                setId={setId}
             />
-            {activeModal && (
+            {isActiveModal && (
                 <TasksModal
-                    id={id}
                     isEdit={isEdit}
+                    // currentTask={currentTask}
+                    id={id}
                     editTitle={title}
                     editDescription={description}
-                    modalHeader={modalHeader}
+                    modalHeader={isEdit ? 'Редактирование задачи' : 'Добавить задачу'}
                     modalButtonText={isEdit ? 'Сохранить' : 'Создать'}
                     closeModal={closeModalClickHandler}
                 />
             )}
-            {activeDeleteModal && (
+            {isActiveDeleteModal && (
                 <DeleteModal
                     id={id}
-                    isTask={isTask}
+                    header="задачи"
                     title={title}
-                    deleteModalText={deleteModalText}
+                    deleteModalText="задачу"
                     onAcceptClick={deleteItemHandler}
                     onCancelClick={closeDeleteModalHandler}
                 />

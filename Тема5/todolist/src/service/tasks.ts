@@ -9,6 +9,7 @@ import {
     tasksIsLoading,
 } from '../redux/tasks/actionCreators';
 import { ITask } from '../redux/tasks/reducer';
+import { CategoryType } from '../redux/categories/reducer';
 
 // Загрузка всех задач из базы данных в редакс
 export const tasksFetchData = () => (dispatch: any) => {
@@ -22,14 +23,22 @@ export const tasksFetchData = () => (dispatch: any) => {
 
         // Добавление задачам категорий
         const tasksWithCategories = tasks.map((task: ITask) => {
-            for (let i = 0; i < categories.length; i++) {
-                const categoryId: number = categories[i].id;
-                const categoryTitle: string = categories[i].title;
+            categories.map((category: CategoryType) => {
+                const categoryId = category.id;
+                const categoryTitle = category.title;
 
                 if (task.categoryId === categoryId) {
                     task = { ...task, categoryTitle };
                 }
-            }
+            });
+            // for (let i = 0; i < categories.length; i++) {
+            //     const categoryId: number = categories[i].id;
+            //     const categoryTitle: string = categories[i].title;
+
+            //     if (task.categoryId === categoryId) {
+            //         task = { ...task, categoryTitle };
+            //     }
+            // }
             return task;
         });
 

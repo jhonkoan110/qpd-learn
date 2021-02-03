@@ -5,7 +5,7 @@ async function all(iterable) {
         console.log('Нужен итерируемый объект');
     } else {
         // Создаётся промис
-        return new Promise((resolve, reject) => {
+        const resultPromise = new Promise((resolve, reject) => {
             // Создаётся результирующий массив
             const result = [];
 
@@ -25,23 +25,24 @@ async function all(iterable) {
                     } catch (error) {
                         count = count + 1;
                         reject(error);
-                    } finally {
-                        if (count > 0) reject();
                     }
                 } else {
                     result[i] = promise;
                 }
             });
+
             setTimeout(() => {
                 resolve(result);
             }, 0);
         });
+
+        return resultPromise;
     }
 }
 
 const promises = [
     new Promise((resolve, reject) => setTimeout(() => resolve(1), 3000)),
-    // new Promise((resolve, reject) => reject(new Error('Моя ошибка'))),
+    new Promise((resolve, reject) => reject(new Error('Моя ошибка'))),
     new Promise((resolve, reject) => setTimeout(() => resolve(3), 1000)),
 ];
 

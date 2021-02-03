@@ -9,17 +9,14 @@ import { deleteCategoryId } from '../redux/tasks/actionCreators';
 import { updateAllTasksFetchData } from '../service/tasks';
 
 const CategoryPage = () => {
-    const [activeModal, setActiveModal] = useState(false);
-    const [activeDeleteModal, setActiveDeleteModal] = useState(false);
-    const [modalHeader, setModalHeader] = useState('Добавить категорию');
+    const [isActiveModal, setIsActiveModal] = useState(false);
+    const [isActiveDeleteModal, setIsActiveDeleteModal] = useState(false);
     const [id, setId] = useState(0);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [isEdit, setIsEdit] = useState(false);
     const dispatch = useDispatch();
     const tasks = useSelector((state: AppStateType) => state.taskList.tasks);
-    const isTask: boolean = false;
-    const deleteModalText: string = 'категорию';
 
     // Открыть модальное окно(создание/редактирование)
     const openModalClickHadnler = (id?: number, title?: string, description?: string) => {
@@ -29,11 +26,10 @@ const CategoryPage = () => {
             if (description) {
                 setDescription(description);
             }
-            setModalHeader('Редактирование категории');
             setIsEdit(true);
         }
 
-        setActiveModal(true);
+        setIsActiveModal(true);
     };
 
     // Обнулить id, title, description
@@ -47,8 +43,7 @@ const CategoryPage = () => {
     const closeModalClickHandler = () => {
         unsetProperties();
         setIsEdit(false);
-        setModalHeader('Добавить категорию');
-        setActiveModal(false);
+        setIsActiveModal(false);
     };
 
     // Открыть модальное окно(удаление)
@@ -56,13 +51,13 @@ const CategoryPage = () => {
         setId(id);
         setTitle(title);
         setDescription(description);
-        setActiveDeleteModal(true);
+        setIsActiveDeleteModal(true);
     };
 
     // Закрыть модальное окно(удаление)
     const closeDeleteModalHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         unsetProperties();
-        setActiveDeleteModal(false);
+        setIsActiveDeleteModal(false);
     };
 
     // Удалить категорию по id, обновить все задачи с данной категорией
@@ -84,23 +79,23 @@ const CategoryPage = () => {
                 openDeleteModalHandler={openDeleteModalHandler}
                 setId={setId}
             />
-            {activeModal && (
+            {isActiveModal && (
                 <CategoryModal
                     id={id}
                     isEdit={isEdit}
                     editTitle={title}
                     editDescription={description}
-                    modalHeader={modalHeader}
+                    modalHeader={isEdit ? 'Редактирование категории' : 'Добавить категорию'}
                     modalButtonText={isEdit ? 'Сохранить' : 'Создать'}
                     closeModal={closeModalClickHandler}
                 />
             )}
-            {activeDeleteModal && (
+            {isActiveDeleteModal && (
                 <DeleteModal
                     id={id}
-                    isTask={isTask}
+                    header="категории"
                     title={title}
-                    deleteModalText={deleteModalText}
+                    deleteModalText="категорию"
                     onAcceptClick={deleteItemHandler}
                     onCancelClick={closeDeleteModalHandler}
                 />

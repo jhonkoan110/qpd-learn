@@ -5,7 +5,7 @@ import Button from '../../Button';
 
 interface DeleteModalProps {
     deleteModalText: string;
-    isTask: boolean | undefined;
+    header: string;
     id: number;
     title: string;
     onAcceptClick: (id: number) => void;
@@ -14,7 +14,7 @@ interface DeleteModalProps {
 
 const DeleteModal: React.FC<DeleteModalProps> = ({
     deleteModalText,
-    isTask,
+    header,
     id,
     title,
     onAcceptClick,
@@ -25,7 +25,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
             <button className="close-modal" onClick={onCancelClick}>
                 ×
             </button>
-            <h1 className="modal__heading">Удаление {isTask ? 'задачи' : 'категории'}</h1>
+            <h1 className="modal__heading">Удаление {header}</h1>
             <p className="delete-modal__text">
                 Вы действительно хотите удалить {deleteModalText} "{title}"?
             </p>

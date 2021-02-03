@@ -33,9 +33,7 @@ const Categories: React.FC<CategoriesProps> = ({ setId, openModal, openDeleteMod
                 return (
                     <CategoryItem
                         key={category.id}
-                        id={category.id}
-                        title={category.title}
-                        description={category.description}
+                        category={category}
                         openModal={openModal}
                         openDeleteModal={openDeleteModalHandler}
                     />
