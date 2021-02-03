@@ -31,14 +31,6 @@ export const tasksFetchData = () => (dispatch: any) => {
                     task = { ...task, categoryTitle };
                 }
             });
-            // for (let i = 0; i < categories.length; i++) {
-            //     const categoryId: number = categories[i].id;
-            //     const categoryTitle: string = categories[i].title;
-
-            //     if (task.categoryId === categoryId) {
-            //         task = { ...task, categoryTitle };
-            //     }
-            // }
             return task;
         });
 
