@@ -1,5 +1,5 @@
 // Аналог метода Promise.all()
-async function all(iterable) {
+function all(iterable) {
     // Проверяет аргумент, является ли он итерируемым (массив, объект, строка и тд)
     if (typeof iterable[Symbol.iterator] !== 'function') {
         console.log('Нужен итерируемый объект');
@@ -7,33 +7,46 @@ async function all(iterable) {
         // Создаётся промис
         const resultPromise = new Promise((resolve, reject) => {
             // Создаётся результирующий массив
-            const result = [];
+            const result = new Array(iterable.length);
 
             // Если объект пустой, то в резульат промиса отправляется пустой массив
             if (iterable.length == 0) {
                 resolve(result);
             }
-            let count = 0;
-            iterable.forEach(async (promise, i) => {
+
+            // Кол-во промисов, ожидающих проверку
+            let pending = promises.length;
+
+            promises.forEach((promise, i) => {
                 // Если текущий элемент является промисом
                 if (Object.getPrototypeOf(promise) === Promise.prototype) {
                     // Успех промиса отправляется в результирующий массив с таким же индексом
-                    // В случае ошибки обрабатывается ошибка
-                    try {
-                        const response = await promise;
-                        result[i] = response;
-                    } catch (error) {
-                        count = count + 1;
-                        reject(error);
-                    }
+                    promise.then(
+                        (res) => {
+                            result[i] = res;
+                            // Кол-во непроверенных промисов уменьшается на 1
+                            pending -= 1;
+                            // Если все сущности прошли проверку, резолвится результат
+                            if (pending == 0) {
+                                resolve(result);
+                            }
+                        },
+                        // В случае ошибки реджектится ошибка
+                        (error) => {
+                            reject(error);
+                        },
+                    );
                 } else {
+                    // Не промис сразу записывается в результат
                     result[i] = promise;
+                    // Кол-во непроверенных промисов уменьшается на 1
+                    pending -= 1;
+                    // Елси все сущности прошли проверку, резолвится результат
+                    if (pending == 0) {
+                        resolve(result);
+                    }
                 }
             });
-
-            setTimeout(() => {
-                resolve(result);
-            }, 0);
         });
 
         return resultPromise;
@@ -42,8 +55,10 @@ async function all(iterable) {
 
 const promises = [
     new Promise((resolve, reject) => setTimeout(() => resolve(1), 3000)),
-    new Promise((resolve, reject) => reject(new Error('Моя ошибка'))),
+    new Promise((resolve, reject) => setTimeout(() => reject(new Error('error')), 2000)),
     new Promise((resolve, reject) => setTimeout(() => resolve(3), 1000)),
+    4,
+    ';asdasd',
 ];
 
 const res = all(promises);
