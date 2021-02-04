@@ -13,22 +13,13 @@ const TaskPage: React.FC = () => {
         title: '',
         description: '',
     });
-    const [id, setId] = useState(0);
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
     const [isEdit, setIsEdit] = useState(false);
     const dispatch = useDispatch();
 
     // Открыть модальное окно(добавление/редактирование)
     const openModalClickHadnler = (id?: number, title?: string, description?: string) => {
         if (id && title) {
-            // setCurrentTask({ ...currentTask, id, title });
-            setId(id);
-            setTitle(title);
-            if (description) {
-                // setCurrentTask({ ...currentTask, description });
-                setDescription(description);
-            }
+            setCurrentTask({ ...currentTask, id, title, description: description || '' });
             setIsEdit(true);
         }
 
@@ -37,31 +28,24 @@ const TaskPage: React.FC = () => {
 
     // Обнулить id, title, description
     const unsetProperties = () => {
-        setId(0);
-        setTitle('');
-        setDescription('');
+        setCurrentTask({ id: 0, title: '', description: '' });
     };
 
     // Закрыть модальное окно(добавление/редактирование)
     const closeModalClickHandler = () => {
         unsetProperties();
-        // setCurrentTask({ id: 0, title: '', description: '' });
         setIsEdit(false);
         setIsActiveModal(false);
     };
 
     // Открыть модальное окно(удаление)
     const openDeleteModalHandler = (id: number, title: string, description: string) => {
-        // setCurrentTask({ id, title, description });
-        setId(id);
-        setTitle(title);
-        setDescription(description);
+        setCurrentTask({ id, title, description });
         setIsActiveDeleteModal(true);
     };
 
     // Закрыть модальное окно(удаление)
     const closeDeleteModalHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        // setCurrentTask({ id: 0, title: '', description: '' });
         unsetProperties();
         setIsActiveDeleteModal(false);
     };
@@ -70,6 +54,7 @@ const TaskPage: React.FC = () => {
     const deleteItemHandler = (id: number) => {
         dispatch(deleteTaskFetchData(id));
         dispatch(tasksFetchData());
+        setIsActiveDeleteModal(false);
     };
 
     return (
@@ -84,10 +69,7 @@ const TaskPage: React.FC = () => {
             {isActiveModal && (
                 <TasksModal
                     isEdit={isEdit}
-                    // currentTask={currentTask}
-                    id={id}
-                    editTitle={title}
-                    editDescription={description}
+                    currentTask={currentTask}
                     modalHeader={isEdit ? 'Редактирование задачи' : 'Добавить задачу'}
                     modalButtonText={isEdit ? 'Сохранить' : 'Создать'}
                     closeModal={closeModalClickHandler}
@@ -95,9 +77,9 @@ const TaskPage: React.FC = () => {
             )}
             {isActiveDeleteModal && (
                 <DeleteModal
-                    id={id}
+                    id={currentTask.id}
                     header="задачи"
-                    title={title}
+                    title={currentTask.title}
                     deleteModalText="задачу"
                     onAcceptClick={deleteItemHandler}
                     onCancelClick={closeDeleteModalHandler}

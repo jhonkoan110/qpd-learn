@@ -15,6 +15,7 @@ const SelectCategory: React.FC<SelectCategoryProps> = ({
     onClearCategoriesClick,
 }) => {
     const categories = useSelector((state: AppStateType) => state.categoryList.categories);
+
     return (
         <fieldset className="modal__fieldset  task-modal__fieldset ml-24">
             <legend className="modal__legend task-modal__legend">Категория</legend>

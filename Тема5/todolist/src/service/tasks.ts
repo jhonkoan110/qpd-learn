@@ -23,7 +23,7 @@ export const tasksFetchData = () => (dispatch: any) => {
 
         // Добавление задачам категорий
         const tasksWithCategories = tasks.map((task: ITask) => {
-            categories.map((category: CategoryType) => {
+            categories.forEach((category: CategoryType) => {
                 const categoryId = category.id;
                 const categoryTitle = category.title;
 

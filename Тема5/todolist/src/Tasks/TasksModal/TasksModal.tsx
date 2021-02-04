@@ -11,29 +11,29 @@ import Title from '../../components/Fieldsets/Title/Title';
 import Description from '../../components/Fieldsets/Description/Description';
 
 interface IModalProps {
-    id?: number;
+    // id?: number;
+    // editTitle?: string;
+    // editDescription?: string;
+    currentTask?: ITask;
     isEdit?: boolean;
-    editTitle?: string;
-    // currentTask?: ITask;
-    editDescription?: string;
     modalHeader: string;
     modalButtonText: string;
     closeModal: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 const TasksModal: React.FC<IModalProps> = ({
-    id,
+    // id,
+    // editTitle,
+    // editDescription,
+    currentTask,
     isEdit,
-    editTitle,
-    // currentTask,
-    editDescription,
     closeModal,
     modalHeader,
     modalButtonText,
 }) => {
-    // const id: number | undefined = currentTask?.id;
-    // const editTitle: string | undefined = currentTask?.title;
-    // const editDescription: string | undefined = currentTask?.description;
+    const id: number | undefined = currentTask?.id;
+    const editTitle: string | undefined = currentTask?.title;
+    const editDescription: string | undefined = currentTask?.description;
     const [title, setTitle] = useState(editTitle || '');
     const [description, setDescription] = useState(editDescription || '');
     const [required, setRequired] = useState(false);

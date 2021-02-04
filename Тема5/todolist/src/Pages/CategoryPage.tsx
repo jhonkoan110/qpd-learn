@@ -11,9 +11,11 @@ import { updateAllTasksFetchData } from '../service/tasks';
 const CategoryPage = () => {
     const [isActiveModal, setIsActiveModal] = useState(false);
     const [isActiveDeleteModal, setIsActiveDeleteModal] = useState(false);
-    const [id, setId] = useState(0);
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
+    const [currentCategory, setCurrentCategory] = useState({
+        id: 0,
+        title: '',
+        description: '',
+    });
     const [isEdit, setIsEdit] = useState(false);
     const dispatch = useDispatch();
     const tasks = useSelector((state: AppStateType) => state.taskList.tasks);
@@ -21,11 +23,7 @@ const CategoryPage = () => {
     // Открыть модальное окно(создание/редактирование)
     const openModalClickHadnler = (id?: number, title?: string, description?: string) => {
         if (id && title) {
-            setId(id);
-            setTitle(title);
-            if (description) {
-                setDescription(description);
-            }
+            setCurrentCategory({ id, title, description: description || '' });
             setIsEdit(true);
         }
 
@@ -34,9 +32,7 @@ const CategoryPage = () => {
 
     // Обнулить id, title, description
     const unsetProperties = () => {
-        setId(0);
-        setTitle('');
-        setDescription('');
+        setCurrentCategory({ id: 0, title: '', description: '' });
     };
 
     // Закрыть модальное окно(создание/редактирование)
@@ -48,9 +44,7 @@ const CategoryPage = () => {
 
     // Открыть модальное окно(удаление)
     const openDeleteModalHandler = (id: number, title: string, description: string) => {
-        setId(id);
-        setTitle(title);
-        setDescription(description);
+        setCurrentCategory({ id, title, description });
         setIsActiveDeleteModal(true);
     };
 
@@ -61,12 +55,13 @@ const CategoryPage = () => {
     };
 
     // Удалить категорию по id, обновить все задачи с данной категорией
-    // Обновить UI
+    // Обновить UI, закрыть модальное окно
     const deleteItemHandler = (id: number) => {
         dispatch(deleteCategoryId(id));
         dispatch(updateAllTasksFetchData(tasks));
         dispatch(deleteCategoryFetchData(id));
         dispatch(categoriesFetchData());
+        setIsActiveDeleteModal(false);
     };
 
     return (
@@ -77,14 +72,11 @@ const CategoryPage = () => {
             <Categories
                 openModal={openModalClickHadnler}
                 openDeleteModalHandler={openDeleteModalHandler}
-                setId={setId}
             />
             {isActiveModal && (
                 <CategoryModal
-                    id={id}
+                    currentCategory={currentCategory}
                     isEdit={isEdit}
-                    editTitle={title}
-                    editDescription={description}
                     modalHeader={isEdit ? 'Редактирование категории' : 'Добавить категорию'}
                     modalButtonText={isEdit ? 'Сохранить' : 'Создать'}
                     closeModal={closeModalClickHandler}
@@ -92,9 +84,9 @@ const CategoryPage = () => {
             )}
             {isActiveDeleteModal && (
                 <DeleteModal
-                    id={id}
+                    id={currentCategory.id}
+                    title={currentCategory.title}
                     header="категории"
-                    title={title}
                     deleteModalText="категорию"
                     onAcceptClick={deleteItemHandler}
                     onCancelClick={closeDeleteModalHandler}

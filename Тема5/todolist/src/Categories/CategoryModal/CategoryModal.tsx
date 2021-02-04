@@ -14,24 +14,24 @@ import Title from '../../components/Fieldsets/Title/Title';
 import Description from '../../components/Fieldsets/Description/Description';
 
 interface IModalProps {
-    id?: number;
+    currentCategory?: CategoryType;
     isEdit?: boolean;
-    editTitle?: string;
-    editDescription?: string;
     modalHeader: string;
     modalButtonText: string;
     closeModal: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 const CategoryModal: React.FC<IModalProps> = ({
-    id,
+    currentCategory,
     isEdit,
-    editTitle,
-    editDescription,
     closeModal,
     modalHeader,
     modalButtonText,
 }) => {
+    const id = currentCategory?.id;
+    const editTitle = currentCategory?.title;
+    const editDescription = currentCategory?.description;
+
     const [title, setTitle] = useState(editTitle || '');
     const [description, setDescription] = useState(editDescription ? editDescription : '');
     const [required, setRequired] = useState(false);
