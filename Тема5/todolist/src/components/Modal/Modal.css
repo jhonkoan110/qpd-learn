@@ -10,7 +10,7 @@
     left: 0;
     z-index: 9999;
     opacity: 1;
-    pointer-events: none;
+    pointer-events: 0;
 
     transition: 0.5s;
 }
